@@ -37,3 +37,44 @@ h2 {
  .main_selector {
   @apply mb-6 md:mb-8 w-full max-w-4xl px-2;
  }
+
+
+.page_wrapper_header_decoration {
+  width: 100%;
+  height: 250px;
+  background-image: url("/jameswebb.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.page_wrapper_header {
+    padding: 70px 30px 50px 70px;
+    position: relative;
+ }
+
+.page_wrapper_header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(128, 128, 128, 0.3), transparent);
+    pointer-events: none;
+}
+
+.page_wrapper_content > p {
+  padding-left: 70px;
+}
+
+.page_wrapper_content > a::before {
+  content: "> ";
+}
+.page_wrapper_content > a {
+  text-decoration: underline;
+  display: inline-block;
+  padding: 10px 0;
+}
+.page_wrapper_content > a:hover {
+  color:#b0b0b0;
+}
