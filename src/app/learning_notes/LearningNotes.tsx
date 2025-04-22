@@ -1,8 +1,7 @@
-import Link from 'next/link'
 import React from 'react'
 import PageWrapper from '../../../components/PageWrapper'
 
-function page() {
+function LearningNotes() {
   return (
     <PageWrapper title="Learning Notes">
         <p>{`In this public Notion website I explore several topics such as differential equations, genomics or deep learning.
@@ -15,4 +14,4 @@ function page() {
   )
 }
 
-export default page
+export default LearningNotes
