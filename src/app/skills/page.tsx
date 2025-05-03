@@ -1,8 +1,10 @@
+
 import React from 'react'
+import PageWrapper from '../../../components/PageWrapper'
 
 function Skills() {
   return (
-    <div>Skills</div>
+    <PageWrapper title='Skills'>Skills</PageWrapper>
   )
 }
 

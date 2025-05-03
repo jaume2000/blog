@@ -18,9 +18,9 @@ export default function Home() {
           <h1 className="font-bold text-center">
             Jaume Ivars Grimalt
           </h1>
-          <desc>
+          <h3 className="description">
             Computer Vision Engineer
-          </desc>
+          </h3>
         </div>
       </div>
       <div className="main_selector">
