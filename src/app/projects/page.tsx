@@ -3,7 +3,7 @@ import PageWrapper from '../../../components/PageWrapper'
 
 function projects() {
   return (
-    <PageWrapper title='My projects'>projects</PageWrapper>
+    <PageWrapper title='My projects'>Uhh I am building this page, come back later</PageWrapper>
   )
 }
 
