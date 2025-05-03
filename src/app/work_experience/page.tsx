@@ -3,7 +3,11 @@ import PageWrapper from '../../../components/PageWrapper'
 
 function work_experiencie() {
   return (
-    <PageWrapper title="asd">work_experiencie</PageWrapper>
+    <PageWrapper title="asd">
+      <p>
+      Not done yet!
+      </p>
+    </PageWrapper>
   )
 }
 
