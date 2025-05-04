@@ -12,7 +12,7 @@ function LearningNotes() {
               <iframe src="https://proud-coyote-bf3.notion.site/ebd/1d306083754780ffbb44ed01f212f884" width="100%" height="800" frameBorder="0" allowFullScreen />
           </div>
           <div className='flex align-middle justify-center my-10'>
-            <iframe src="https://proud-coyote-bf3.notion.site/ebd/1b706083754780928dedf1a01822a540" width="100%" height="800" frameBorder="0" allowFullScreen />
+            <iframe src="https://proud-coyote-bf3.notion.site/ebd/1b7060837547802896c6eed3acd18a4b?v=1b70608375478022a670000ce16d38c3" width="100%" height="800" frameBorder="0" allowFullScreen />
           </div>
           <div className='flex align-middle justify-center my-10'>
             <iframe src="https://proud-coyote-bf3.notion.site/ebd/6e4752deae6344a3988e479d2cc61712?v=b23a2cad63c0430fbfdbb08024c08c9a" width="100%" height="800" frameBorder="0" allowFullScreen />
