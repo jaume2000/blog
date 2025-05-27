@@ -1,18 +1,18 @@
+"use client";
 import React from 'react';
 import { notFound } from 'next/navigation';
 import PageWrapper from '@/components/PageWrapper';
 import ReactMarkdown from 'react-markdown';
 import { getBlogPostBySlug } from '@/lib/blog';
-
-// Correct type definition for Next.js App Router page props
-type Props = {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+import { useRouter } from 'next/router'
+ 
 
 // Make the component async to match Next.js App Router conventions
-export default async function BlogPost({ params }: Props) {
-  const { slug } = params;
+export default function BlogPost() {
+
+
+  const router = useRouter()
+  const slug = router.query.slug as string;
   const post = getBlogPostBySlug(slug);
   
   if (!post) {
