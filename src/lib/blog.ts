@@ -27,17 +27,22 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
   try {
     const fullPath = path.join(blogDirectory, `${slug}.md`);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
-    
-    // Parse basic metadata from content
-    const lines = fileContents.split('\n').filter(line => line.trim() !== '');
-    const title = (lines[0] || slug).replace(/#/g, '').trim(); // Remove markdown header syntax
-    const excerpt = lines.slice(1, 3).join(' ').substring(0, 150) + '...';
-    const content_without_title = lines.slice(1).join('\n'); // Remove title line from content
-    
+
+    // Extraer el título de la primera línea que comienza con '#'
+    const lines = fileContents.split('\n');
+    const titleLine = lines.find(line => line.trim().startsWith('#'));
+    const title = titleLine ? titleLine.replace(/^#+\s*/, '').trim() : slug;
+
+    // El contenido completo sin modificar
+    const content = lines.slice(1).join('\n');
+
+    // Crear un extracto (opcional)
+    const excerpt = lines.slice(1).join(' ').substring(0, 150) + '...';
+
     return {
       slug,
       title,
-      content: content_without_title,
+      content,
       excerpt
     };
   } catch (error) {
@@ -45,3 +50,4 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
     return null;
   }
 }
+

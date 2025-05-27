@@ -3,6 +3,7 @@ import PageWrapper from '@/components/PageWrapper'
 import ReactMarkdown from 'react-markdown'
 import fs from 'fs';
 import path from 'path';
+import remarkBreaks from 'remark-breaks';
 
 const nacimiento = new Date(2001, 9, 5, 5, 30);
 const date_time = Date.now() - nacimiento.getTime();
@@ -28,7 +29,8 @@ const markdown = fs.readFileSync(
 function About() {
   return (
     <PageWrapper title="About me">
-      <ReactMarkdown skipHtml={false}>{markdown}
+      <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+        {markdown}
       </ReactMarkdown>
     </PageWrapper>
   )

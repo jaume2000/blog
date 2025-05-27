@@ -11,12 +11,10 @@ function PageWrapper({title, children}:{title:string,children:React.ReactNode}) 
         <div className='page_wrapper_header'>
             <h1>{title}</h1>
         </div>
-        <div className='page_wrapper_content'>
           <div className="max-w-4xl mx-auto px-4">
-            <div className="prose dark:prose-invert prose-lg mx-auto">
+            <div className="prose dark:prose-invert prose-lg mx-auto page_wrapper_content">
               {children}
             </div>
-          </div>
         </div>
         <div className='w-full h-64'>
 

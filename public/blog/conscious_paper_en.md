@@ -28,7 +28,7 @@ So, what I want to say with this? What about you? You are not a river or an ocea
 
 Maybe if our "conciusness" was alocated in another thing, we could experience past, present and future at the same time. Maybe if it wereposible to make a human-like brain program with just light, the consciousness would also be uilt in the electro-magnetic field instead of the matter. Maybe if we could make a human brain-like program that is embeeded in the space-time curvature, we could build a conscious that IS the puse fabric of the universe.
 
-# You cound be a piece of paper
+## You cound be a piece of paper
 
 Since every thing that can be computable can be expressed with a Turing Machine, and by definition, everything that exists, exists becase there is a nature law that allows its existence, it must be computable. So, our brain's cell's could be expressed with a Turing Machine.
 
@@ -69,11 +69,13 @@ I just can say that we are all little waves in a ocean, and maybe, we just have 
 
 ## What is the correct religin according with this?
 
-As you can see, every religion is too superficial for this ideas, they are too basic. They often fall into this axios:
+As you can see, every religion is too superficial for this ideas, they are too basic. They often fall into this axioms:
 
-1. Individualism of the soul
-2. Existence of bigger authorithy (GOD)
-3. Afterlife
+Individualism of the soul 
+
+Existence of bigger authorithy (GOD) 
+
+Afterlife 
 
 In my opinion, none of they exists. Maybe the second, but not as a separate entity of the universe. God IS the universe and the existence itself, it doesn't do nothing over the things in its consciousness, it just exists. Tao the Ching, Lao Tse, explores this idea very well: The Tao ("God") is a passive entity that permits that everyting exists without acting, just existing: Allows the good and the evil coexist, allows the tall and the short coexist. It just lets go the reality to be, and the human kind to make their own concepts.
 
@@ -87,7 +89,7 @@ Isam and Judaism would be something les popular like Popeye's or Taco Bell.
 
 Buddism and Induism are the more acurate ones, they explore ideas of the "Universal Soul" and reincarnation, but fall into the idea that the soul exists and it becomes individual when it comes to life. I do not believe that.
 
-# Time is a consequence of our consciousness
+## Time is a consequence of our consciousness
 
 Since we are the process that occurs in our brain, this is the reason why we experience present and remember the past, because makes no sense of existing at the same time, neither makes sense that a process ocurrs if an arrow of time doesn't exist, since a pure state of a conscious being (freezed in time) would have no consciousness, so a consciousness only can emerge with a direction called time or entropy. But this "arrow" could be anything. Instead of the 4-dimensional universe where the entropy thends to increaw towards the "w" dimetion, it flowed thowards X,Y and Z dimension, we would be a 1-dimensional beings with 3 dimensional timelines, but we would be only consciouss of 1 dimensional timeline since we would be the result of one flow in that point in space-time.
 

@@ -28,7 +28,7 @@ Entonces, ¿qué quiero decir con esto? ¿Y tú qué? No eres un río ni un océ
 
 Quizá, si nuestra "consciencia" estuviera ubicada en otra cosa, podríamos experimentar pasado, presente y futuro al mismo tiempo. Tal vez, si fuera posible hacer un programa con forma de cerebro humano solo con luz, la consciencia también estaría en el campo electromagnético en lugar de la materia. Tal vez, si pudiéramos hacer un programa de cerebro humano incrustado en la curvatura del espacio-tiempo, podríamos construir una consciencia que sea el puro tejido del universo.
 
-# Podrías ser un trozo de papel
+## Podrías ser un trozo de papel
 
 Ya que todo lo que puede ser computable puede expresarse con una Máquina de Turing, y por definición, todo lo que existe, existe porque hay una ley natural que permite su existencia, debe ser computable. Entonces, las células de nuestro cerebro podrían expresarse con una Máquina de Turing.
 
@@ -87,7 +87,7 @@ El islam y el judaísmo serían algo menos popular como el Popeye's o el Taco Be
 
 El budismo y el hinduismo son los más acertados, exploran ideas del "Alma Universal" y la reencarnación, pero caen en la idea de que el alma existe y se vuelve individual al nacer. Yo no creo en eso.
 
-# El tiempo es una consecuencia de nuestra consciencia
+## El tiempo es una consecuencia de nuestra consciencia
 
 Como somos el proceso que ocurre en nuestro cerebro, esta es la razón por la cual experimentamos el presente y recordamos el pasado, porque no tiene sentido existir en todos los tiempos a la vez, tampoco tiene sentido que ocurra un proceso si no existe una flecha del tiempo, ya que un estado puro de un ser consciente (congelado en el tiempo) no tendría consciencia. Así que la consciencia solo puede emerger con una dirección llamada tiempo o entropía. Pero esta "flecha" podría ser cualquier cosa. En lugar de un universo de 4 dimensiones donde la entropía tiende a aumentar hacia la dimensión "w", si fluyera hacia las dimensiones X, Y y Z, seríamos seres unidimensionales con líneas temporales tridimensionales, pero solo seríamos conscientes de una de esas líneas temporales, ya que seríamos el resultado de un único flujo en ese punto del espacio-tiempo.
 
