@@ -4,15 +4,14 @@ import PageWrapper from '@/components/PageWrapper';
 import ReactMarkdown from 'react-markdown';
 import { getBlogPostBySlug } from '@/lib/blog';
 
-// Update the parameter type to match Next.js App Router conventions
-type BlogPostProps = {
+// Correct type definition for Next.js App Router page props
+type Props = {
   params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export const dynamic = 'force-dynamic';
-
-function BlogPost({ params }: BlogPostProps) {
+// Make the component async to match Next.js App Router conventions
+export default async function BlogPost({ params, searchParams }: Props) {
   const { slug } = params;
   const post = getBlogPostBySlug(slug);
   
@@ -28,5 +27,3 @@ function BlogPost({ params }: BlogPostProps) {
     </PageWrapper>
   );
 }
-
-export default BlogPost;
