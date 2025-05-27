@@ -11,7 +11,7 @@ type Props = {
 };
 
 // Make the component async to match Next.js App Router conventions
-export default async function BlogPost({ params, searchParams }: Props) {
+export default async function BlogPost({ params }: Props) {
   const { slug } = params;
   const post = getBlogPostBySlug(slug);
   
