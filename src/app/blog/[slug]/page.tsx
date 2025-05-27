@@ -5,12 +5,9 @@ import { getBlogPostBySlug } from '../../../lib/blog';
 
 export const dynamic = 'force-dynamic';
 
-export default async function BlogPost({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const post = getBlogPostBySlug(params.slug);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function BlogPost(props: any) {
+  const post = getBlogPostBySlug(props.params.slug);
 
   if (!post) {
     notFound();
