@@ -1,4 +1,4 @@
-# Is a rock conscious?
+# Is a rock conscious? (English)
 
 This post explains my "religion" beliefs deduced from the *cognito ergo sum* principle, using computational theory and mental experiments with some existentialist questions.
 

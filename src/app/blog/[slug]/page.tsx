@@ -1,18 +1,18 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import PageWrapper from '../../../components/PageWrapper';
+import PageWrapper from '@/components/PageWrapper';
 import ReactMarkdown from 'react-markdown';
-import { getBlogPostBySlug } from '../../../lib/blog';
+import { getBlogPostBySlug } from '@/lib/blog';
 
-interface BlogPostParams {
-  params: {
-    slug: string;
-  };
-}
+// Update the parameter type to match Next.js App Router conventions
+type BlogPostProps = {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
 
 export const dynamic = 'force-dynamic';
 
-function BlogPost({ params }: BlogPostParams) {
+function BlogPost({ params }: BlogPostProps) {
   const { slug } = params;
   const post = getBlogPostBySlug(slug);
   
@@ -22,7 +22,9 @@ function BlogPost({ params }: BlogPostParams) {
   
   return (
     <PageWrapper title={post.title}>
+      <div className="prose dark:prose-invert max-w-none">
         <ReactMarkdown>{post.content}</ReactMarkdown>
+      </div>
     </PageWrapper>
   );
 }
