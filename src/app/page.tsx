@@ -37,6 +37,7 @@ export default function Home() {
         <div className="flex flex-col p-3 sm:p-5 rounded-xl border-gray-600 border-2 space-y-3 w-full">
           <Link className="hover:text-gray-400" href={"/learning_notes"}>{"Checkout my notes about Deep Learning, Maths and Biotech"}</Link>
           <Link className="hover:text-gray-400" href={"/learning_recomendations"}>{"Checkout cool books and papers that I recommend"}</Link>
+          <Link className="hover:text-gray-400" href={"/blog"}>{"Read my blog"}</Link>
         </div>
       </div>
     </div>

@@ -9,14 +9,21 @@ const generateVhHeights = () => {
 }
 
 const config: Config = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,html}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx,html}', './components/**/*.{js,ts,jsx,tsx,html}', './lib/**/*.{js,ts}'],
   theme: {
     extend: {
       height: generateVhHeights(),
       minHeight: generateVhHeights(),
       maxHeight: generateVhHeights(),
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '100%',
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }
 export default config
