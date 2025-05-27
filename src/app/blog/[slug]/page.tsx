@@ -1,24 +1,21 @@
-"use client";
-import React from 'react';
 import { notFound } from 'next/navigation';
-import PageWrapper from '@/components/PageWrapper';
+import PageWrapper from '../../../components/PageWrapper';
 import ReactMarkdown from 'react-markdown';
-import { getBlogPostBySlug } from '@/lib/blog';
-import { useRouter } from 'next/router'
- 
+import { getBlogPostBySlug } from '../../../lib/blog';
 
-// Make the component async to match Next.js App Router conventions
-export default function BlogPost() {
+export const dynamic = 'force-dynamic';
 
+export default async function BlogPost({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const post = getBlogPostBySlug(params.slug);
 
-  const router = useRouter()
-  const slug = router.query.slug as string;
-  const post = getBlogPostBySlug(slug);
-  
   if (!post) {
     notFound();
   }
-  
+
   return (
     <PageWrapper title={post.title}>
       <div className="prose dark:prose-invert max-w-none">
