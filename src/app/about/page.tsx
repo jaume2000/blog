@@ -1,5 +1,5 @@
 import React from 'react'
-import PageWrapper from '../../components/PageWrapper'
+import PageWrapper from '@/components/PageWrapper'
 import ReactMarkdown from 'react-markdown'
 import fs from 'fs';
 import path from 'path';
