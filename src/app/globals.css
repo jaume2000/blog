@@ -50,6 +50,7 @@ h2 {
 .page_wrapper_header {
     padding: 70px 30px 50px 70px;
     position: relative;
+    text-align: center;
  }
 
 .page_wrapper_header::after {

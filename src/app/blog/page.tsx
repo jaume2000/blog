@@ -1,7 +1,7 @@
 import React from 'react';
-import PageWrapper from '../../../components/PageWrapper';
-import BlogCard from '../../../components/BlogCard';
-import { getBlogPosts } from '../../../lib/blog';
+import PageWrapper from '../../components/PageWrapper';
+import BlogCard from '../../components/BlogCard';
+import { getBlogPosts } from '../../lib/blog';
 
 export const dynamic = 'force-dynamic';
 

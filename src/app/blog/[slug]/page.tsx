@@ -1,8 +1,8 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import PageWrapper from '../../../../components/PageWrapper';
+import PageWrapper from '../../../components/PageWrapper';
 import ReactMarkdown from 'react-markdown';
-import { getBlogPostBySlug } from '../../../../lib/blog';
+import { getBlogPostBySlug } from '../../../lib/blog';
 
 interface BlogPostParams {
   params: {
@@ -22,11 +22,7 @@ function BlogPost({ params }: BlogPostParams) {
   
   return (
     <PageWrapper title={post.title}>
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="prose dark:prose-invert prose-lg mx-auto">
-          <ReactMarkdown>{post.content}</ReactMarkdown>
-        </div>
-      </div>
+        <ReactMarkdown>{post.content}</ReactMarkdown>
     </PageWrapper>
   );
 }
