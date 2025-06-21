@@ -30,6 +30,7 @@ export default function Home() {
           <Link className="hover:text-gray-400" href={"/skills"}>{"What are your skills?"}</Link>
           <Link className="hover:text-gray-400" href={"/projects"}>{"What projects have you done? What's Mycrospace?"}</Link>
           <Link className="hover:text-gray-400" href={"/work_experience"}>{"What's your work experience?"}</Link>
+          <Link className="download-cv-gradient" href={"/cv"}>{"Download CV"}</Link>
         </div>
       </div>
       <div className="main_selector">

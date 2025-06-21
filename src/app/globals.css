@@ -85,3 +85,40 @@ li {
 .page_wrapper_content > a:hover {
   color:#b0b0b0;
 }
+
+/* Animated gradient for Download CV button */
+.download-cv-gradient {
+  background: linear-gradient(
+    45deg,
+    #00969b,
+    #0099ff,
+    #00ff88,
+    #00ccff,
+    #40e0d0,
+    #00bfff
+  );
+  background-size: 300% 300%;
+  animation: gradientShift 20s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+.download-cv-gradient:hover {
+  animation-duration: 1.5s;
+  transform: scale(1.05);
+  text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
