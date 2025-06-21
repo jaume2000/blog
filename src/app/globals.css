@@ -90,14 +90,14 @@ li {
 .download-cv-gradient {
   background: linear-gradient(
     45deg,
-    #00969b,
+    #00e6ee,
     #0099ff,
     #00ff88,
     #00ccff,
     #40e0d0,
     #00bfff
   );
-  background-size: 300% 300%;
+  background-size: 10000% 10000%;
   animation: gradientShift 20s ease infinite;
   background-clip: text;
   -webkit-background-clip: text;
@@ -106,9 +106,10 @@ li {
   transition: all 0.3s ease;
 }
 .download-cv-gradient:hover {
-  animation-duration: 1.5s;
+  animation-duration: 20s;
   transform: scale(1.05);
   text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+  margin-left:  20px;
 }
 
 @keyframes gradientShift {
