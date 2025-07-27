@@ -1,5 +1,7 @@
 # Juegos de niños
 
+Este borrador es una grotesca y sangrienta historia que hace diferentes referencias al anarcoliberalismo junto con la muerte de la moral y la ensaltación ante todo de la libertad.
+
 ## Capítulo 1: El niño de la fuente
 
 Se fueron. Ya están aquí, sus padres se marcharon de casa, esos padres que le incordiaban diciéndole lo que estaba bien y lo que estaba mal, diciéndole que no podía cenar pastel de chocolate y que no podía merendar gusanitos.
