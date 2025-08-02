@@ -10,9 +10,9 @@ function Blog() {
   
   return (
     <PageWrapper title="Blog">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="px-4">
         {blogPosts.length > 0 ? (
-          <div className="grid gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {blogPosts.map(post => (
               <BlogCard 
                 key={post.slug}

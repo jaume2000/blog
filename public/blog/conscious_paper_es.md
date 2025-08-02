@@ -1,4 +1,4 @@
-# ¿Es una roca consciente? (Español)
+# ¿Es una roca consciente?
 
 Este post explica mis creencias "religiosas" deducidas del principio *cognito ergo sum*, usando teoría computacional y experimentos mentales con algunas preguntas existencialistas.
 

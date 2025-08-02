@@ -37,7 +37,7 @@ export function getBlogPostBySlug(slug: string): BlogPost | null {
     const content = lines.slice(1).join('\n');
 
     // Crear un extracto (opcional)
-    const excerpt = lines.slice(1).join(' ').substring(0, 150) + '...';
+    const excerpt = lines.slice(1).join(' ').substring(0, 120) + '...';
 
     return {
       slug,

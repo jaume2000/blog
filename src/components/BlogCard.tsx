@@ -9,12 +9,12 @@ interface BlogCardProps {
 
 const BlogCard: React.FC<BlogCardProps> = ({ title, excerpt, slug }) => {
   return (
-    <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-6 mb-6 hover:shadow-md transition-shadow">
-      <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400 mb-4">{excerpt}</p>
+    <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white dark:bg-gray-800 h-full flex flex-col">
+      <h2 className="text-lg font-bold mb-3 line-clamp-2">{title}</h2>
+      <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm flex-grow line-clamp-3">{excerpt}</p>
       <Link 
         href={`/blog/${slug}`} 
-        className="text-blue-600 dark:text-blue-400 hover:underline"
+        className="text-blue-600 dark:text-blue-400 hover:underline mt-auto font-medium"
       >
         Read more →
       </Link>
