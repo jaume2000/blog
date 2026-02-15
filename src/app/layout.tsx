@@ -12,10 +12,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
+
 export const metadata: Metadata = {
-  title: "Jaume's Website",
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  title: {
+    default: "Jaume Ivars Grimalt — Researcher & ML Engineer",
+    template: "%s | Jaume Ivars Grimalt",
+  },
   description: "Jaume Ivars Grimalt is a computer scientist specialized in deep learning computer vision models for various tasks such as object detection and image generation. He is the CTO of Mycrospace and has large experience on developing webpages with MERN stack. He studied in the UPV in Valencia and has one of the best academic expedients of his promotion.",
-  icons: "favicon.png"
+  icons: "favicon.png",
+  openGraph: {
+    type: "website",
+    locale: "en",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
 };
 
 export default function RootLayout({

@@ -3,8 +3,15 @@ import Link from 'next/link';
 import PageWrapper from '../../components/PageWrapper';
 import BlogCard from '../../components/BlogCard';
 import { getBlogPosts, type BlogLocale } from '../../lib/blog';
+import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Blog and articles by Jaume Ivars Grimalt on ML, computer vision, biotech and more.',
+  robots: { index: true, follow: true },
+};
 
 const VALID_LOCALES: BlogLocale[] = ['en', 'es'];
 

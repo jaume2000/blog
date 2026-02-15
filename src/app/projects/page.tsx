@@ -3,12 +3,9 @@ import PageWrapper from '../../components/PageWrapper'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'My projects',
-  description: 'Mycrospace — AI for microbiology. Colony counting and antibiogram analysis.',
-  robots: {
-    index: true,
-    follow: true,
-  },
+  title: 'Mycrospace & Projects',
+  description: 'Jaume Ivars Grimalt — Mycrospace: AI for microbiology. Colony counting and antibiogram analysis.',
+  robots: { index: true, follow: true },
 }
 
 function Projects() {

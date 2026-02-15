@@ -3,12 +3,9 @@ import PageWrapper from '../../components/PageWrapper'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Work experience',
-  description: 'Professional work experience and roles',
-  robots: {
-    index: true,
-    follow: true,
-  },
+  title: 'Work Experience',
+  description: 'Jaume Ivars Grimalt — Professional work experience and roles',
+  robots: { index: true, follow: true },
 }
 
 function WorkExperience() {

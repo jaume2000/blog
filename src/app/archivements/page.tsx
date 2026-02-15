@@ -4,12 +4,9 @@ import PageWrapper from '../../components/PageWrapper'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Some personal achievements',
-  description: 'Personal achievements and background',
-  robots: {
-    index: true,
-    follow: true,
-  },
+  title: 'Achievements',
+  description: 'Jaume Ivars Grimalt — Personal achievements and background',
+  robots: { index: true, follow: true },
 }
 
 

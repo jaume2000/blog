@@ -16,12 +16,9 @@ const dias = Math.floor(diasTotales % 30.44);
 
 
 export const metadata: Metadata = {
-  title: 'About Jaume Ivars Grimalt',
-  description: 'Computer Science graduate, AI enthusiast, and entrepreneur based in Valencia',
-  robots: {
-    index: true,
-    follow: true,
-  },
+  title: 'About',
+  description: 'Jaume Ivars Grimalt — Computer Science graduate, AI enthusiast, and entrepreneur based in Valencia',
+  robots: { index: true, follow: true },
 }
 
 function About() {

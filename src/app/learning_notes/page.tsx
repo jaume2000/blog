@@ -1,5 +1,12 @@
 import React from 'react'
 import PageWrapper from '../../components/PageWrapper'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Learning Notes',
+  description: 'Notes on Deep Learning, Maths & Biotech by Jaume Ivars Grimalt. Computer vision, optimization, image generation, object detection.',
+  robots: { index: true, follow: true },
+}
 
 function LearningNotes() {
   return (
