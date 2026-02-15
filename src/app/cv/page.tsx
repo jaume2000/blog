@@ -8,8 +8,8 @@ export default function CVPage() {
     // Automatically trigger download when the component mounts
     const downloadCV = () => {
       const link = document.createElement('a');
-      link.href = '/Jaume_Ivars_Grimalt_CV.pdf';
-      link.download = 'Jaume_Ivars_Grimalt_CV.pdf';
+      link.href = '/resume.pdf';
+      link.download = 'resume.pdf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -45,8 +45,8 @@ export default function CVPage() {
             <button
               onClick={() => {
                 const link = document.createElement('a');
-                link.href = '/Jaume_Ivars_Grimalt_CV.pdf';
-                link.download = 'Jaume_Ivars_Grimalt_CV.pdf';
+                link.href = '/resume.pdf';
+                link.download = 'resume.pdf';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);

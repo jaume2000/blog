@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+export type BlogLocale = 'en' | 'es';
+
 interface BlogPost {
   slug: string;
   title: string;
@@ -8,46 +10,43 @@ interface BlogPost {
   excerpt: string;
 }
 
-const blogDirectory = path.join(process.cwd(), 'public', 'blog');
-
-export function getBlogPosts(): BlogPost[] {
-  // Get all markdown files from the blog directory
-  const fileNames = fs.readdirSync(blogDirectory);
-  const allPostsData = fileNames
-    .filter((fileName) => fileName.endsWith('.md'))
-    .map((fileName) => {
-        return getBlogPostBySlug(fileName.replace(/\.md$/, ''));
-    });
-  
-  // Sort posts by date
-  return allPostsData.filter(post => post !== null)
+function getBlogDirectory(locale: BlogLocale): string {
+  return path.join(process.cwd(), 'public', 'blog', locale);
 }
 
-export function getBlogPostBySlug(slug: string): BlogPost | null {
+export function getBlogPosts(locale: BlogLocale): BlogPost[] {
+  const dir = getBlogDirectory(locale);
+  if (!fs.existsSync(dir)) return [];
+
+  const fileNames = fs.readdirSync(dir);
+  const allPostsData = fileNames
+    .filter((fileName) => fileName.endsWith('.md'))
+    .map((fileName) => getBlogPostBySlug(fileName.replace(/\.md$/, ''), locale));
+
+  return allPostsData.filter((post): post is BlogPost => post !== null);
+}
+
+export function getBlogPostBySlug(slug: string, locale: BlogLocale): BlogPost | null {
   try {
-    const fullPath = path.join(blogDirectory, `${slug}.md`);
+    const fullPath = path.join(getBlogDirectory(locale), `${slug}.md`);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
 
-    // Extraer el título de la primera línea que comienza con '#'
     const lines = fileContents.split('\n');
-    const titleLine = lines.find(line => line.trim().startsWith('#'));
+    const titleLine = lines.find((line) => line.trim().startsWith('#'));
     const title = titleLine ? titleLine.replace(/^#+\s*/, '').trim() : slug;
 
-    // El contenido completo sin modificar
     const content = lines.slice(1).join('\n');
-
-    // Crear un extracto (opcional)
-    const excerpt = lines.slice(1).join(' ').substring(0, 120) + '...';
+    const excerptRaw = lines.slice(1).join(' ').replace(/\s+/g, ' ').trim();
+    const excerpt = excerptRaw.length > 120 ? excerptRaw.substring(0, 120) + '...' : excerptRaw;
 
     return {
       slug,
       title,
       content,
-      excerpt
+      excerpt,
     };
   } catch (error) {
-    console.error(`Error reading blog post ${slug}:`, error);
+    console.error(`Error reading blog post ${locale}/${slug}:`, error);
     return null;
   }
 }
-

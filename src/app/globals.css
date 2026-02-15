@@ -72,18 +72,31 @@ li {
 
 .page_wrapper_content p {
   text-align: justify;
+  line-height: 1.2
+  ;
+  color: #404040;
 }
 
+/* Direct child links (e.g. in nav lists): add "> " prefix and block-style padding */
 .page_wrapper_content > a::before {
   content: "> ";
 }
 .page_wrapper_content > a {
   text-decoration: underline;
+  text-decoration-color: #003cff;
+  color: #003cff;
   display: inline-block;
   padding: 10px 0;
 }
-.page_wrapper_content > a:hover {
-  color:#b0b0b0;
+/* All links inside content (including inside p, li, etc.) */
+.page_wrapper_content a {
+  text-decoration: underline;
+  text-decoration-color: #003cff;
+  color: #003cff;
+}
+.page_wrapper_content a:hover {
+  color: #b0b0b0;
+  text-decoration-color: #b0b0b0;
 }
 
 /* Animated gradient for Download CV button */

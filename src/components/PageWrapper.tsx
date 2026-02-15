@@ -6,7 +6,7 @@ function PageWrapper({title, children}:{title:string,children:React.ReactNode}) 
   return (
     <div className='w-full'>
         <div className="page_wrapper_header_decoration p-2">
-          <Link href="/"><Undo2 /></Link>
+          <Link href="/"><Undo2 width={40} height={40} color="white"/></Link>
         </div>
         <div className='page_wrapper_header'>
             <h1>{title}</h1>
