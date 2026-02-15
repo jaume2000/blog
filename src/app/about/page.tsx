@@ -13,8 +13,6 @@ const diasTotales = Math.floor(horasTotales / 24);
 const anios = Math.floor(diasTotales / 365.25); // Año bisiesto incluido
 const meses = Math.floor((diasTotales % 365.25) / 30.44); // Promedio de días por mes
 const dias = Math.floor(diasTotales % 30.44);
-const horas = Math.floor(horasTotales % 24);
-const segundos = Math.floor(segundosTotales % 60);
 
 
 export const metadata: Metadata = {
@@ -31,9 +29,9 @@ function About() {
     <PageWrapper title='About Me'>
 
       <p>
-        Hey! I'm <strong>Jaume Ivars Grimalt</strong>, a computer scientist / ML engineer and entrepreneur from Valencia, Spain.
+        Hey! I&apos;m <strong>Jaume Ivars Grimalt</strong>, a computer scientist / ML engineer and entrepreneur from Valencia, Spain.
         I am currently{anios} years, {meses} months and {dias} days old.
-        I studied a master's in AI after studying Computer Science at UPV, and I'm now looking to take 
+        I studied a master&apos;s in AI after studying Computer Science at UPV, and I&apos;m now looking to take 
         the next step in my career—ideally somewhere beyond Spain where I can work on ambitious problems with 
         talented people.
       </p>
@@ -41,7 +39,7 @@ function About() {
       <h2>Why Computer Science?</h2>
       
       <p>
-        Simple answer: it's the universal key to every other field of human knowledge.
+        Simple answer: it&apos;s the universal key to every other field of human knowledge.
       </p>
 
       <p>
@@ -55,14 +53,14 @@ function About() {
       <p>
         Computer Science lets me jump between fields. It gives me the tools to learn anything I want, build 
         anything I can imagine, and contribute to problems that matter. If you want proof of my curiosity, 
-        check out my <a href="/learning_notes">Learning Notes</a>—you'll see everything from machine learning 
+        check out my <a href="/learning_notes">Learning Notes</a>—you&apos;ll see everything from machine learning 
         to quantum mechanics to philosophy.
       </p>
 
       <h2>How I Think and Work</h2>
 
       <p>
-        I'm naturally drawn to understanding <em>why</em> things work, not just <em>how</em>. In high school, 
+        I&apos;m naturally drawn to understanding <em>why</em> things work, not just <em>how</em>. In high school, 
         when we learned integrals, I became fascinated with extending the concept to volumetric integrals and 
         even hypervolumes in 4D space—not because it was required, but because I needed to see the pattern 
         complete itself.
@@ -81,22 +79,22 @@ function About() {
         rather than waiting for formal instruction.
       </p>
 
-      <h2>Where I'm From</h2>
+      <h2>Where I&apos;m From</h2>
 
       <p>
         I grew up in <a href="https://en.wikipedia.org/wiki/Gata_de_Gorgos" target="_blank" rel="noopener noreferrer">
-        Gata de Gorgos</a>, a small town near Alicante. When I was 17, I moved to Valencia to study. I've been 
+        Gata de Gorgos</a>, a small town near Alicante. When I was 17, I moved to Valencia to study. I&apos;ve been 
         living independently here ever since. Valencia is a beautiful city—great people, amazing food, plenty of 
-        opportunities—but the summers are brutal (I can't stand hot humidity), and honestly, I've outgrown it. 
-        I'm ready for the next chapter somewhere else.
+        opportunities—but the summers are brutal (I can&apos;t stand hot humidity), and honestly, I&apos;ve outgrown it. 
+        I&apos;m ready for the next chapter somewhere else.
       </p>
 
       <h2>Early Projects</h2>
 
       <p>
-        My first real "business" was a Minecraft server when I was 15. I taught myself Java so I could code custom 
-        plugins and build game modes for my friends. It wasn't about the money—it was about creating something 
-        people enjoyed. That instinct to build, tinker, and share hasn't left me since.
+        My first real &quot;business&quot; was a Minecraft server when I was 15. I taught myself Java so I could code custom 
+        plugins and build game modes for my friends. It wasn&apos;t about the money—it was about creating something 
+        people enjoyed. That instinct to build, tinker, and share hasn&apos;t left me since.
       </p>
 
       <p>
@@ -108,20 +106,20 @@ function About() {
       <h2>What I Do Outside Work</h2>
 
       <p>
-        Right now I'm into calisthenics and gym training. If you're near Valencia and want a workout partner, 
-        let's connect! I also love watching thoughtful series like <em>The Owl House</em>, reading philosophy, 
+        Right now I&apos;m into calisthenics and gym training. If you&apos;re near Valencia and want a workout partner, 
+        let&apos;s connect! I also love watching thoughtful series like <em>The Owl House</em>, reading philosophy, 
         and staying current with deep learning research (you can see my notes <a href="/learning_notes">here</a>).
       </p>
 
       <p>
         I used to play chess competitively and draw regularly, but I had to step back to focus on my projects. 
-        When I have more bandwidth, I'll bring those hobbies back—they're too important to leave behind permanently.
+        When I have more bandwidth, I&apos;ll bring those hobbies back—they&apos;re too important to leave behind permanently.
       </p>
 
       <h2>Favorite Games</h2>
 
       <p>
-        I'm a huge fan of <em>Portal 2</em> (brilliant game design), <em>Mario Kart Wii</em>, the <em>New Super 
+        I&apos;m a huge fan of <em>Portal 2</em> (brilliant game design), <em>Mario Kart Wii</em>, the <em>New Super 
         Mario Bros</em> series, and obviously <em>Minecraft</em>. These games shaped how I think about problem-solving, 
         creativity, and fun. Portal especially taught me that the best solutions come from breaking the rules 
         in clever ways... and that if an AI promises you cake, you should be very suspicious.
@@ -132,26 +130,26 @@ function About() {
       <p>
         My deepest ambition is freedom—not in the hedonistic sense, but in the sense of capability and agency. 
         True freedom means being able to learn anything, build anything, solve any problem that matters to me. 
-        It requires extraordinary discipline because when you can do anything, you need wisdom to choose what's 
+        It requires extraordinary discipline because when you can do anything, you need wisdom to choose what&apos;s 
         worth doing.
       </p>
 
       <p>
-        I believe the point of life is to give something meaningful to humanity. We're all fundamentally alone, 
-        and yet our biology wires us to connect, to be useful, to contribute. I don't fight that—I embrace it. 
-        My goal is to build the skills and knowledge to contribute at the highest level I'm capable of.
+        I believe the point of life is to give something meaningful to humanity. We&apos;re all fundamentally alone, 
+        and yet our biology wires us to connect, to be useful, to contribute. I don&apos;t fight that—I embrace it. 
+        My goal is to build the skills and knowledge to contribute at the highest level I&apos;m capable of.
       </p>
 
-      <h2>What I'm Afraid Of</h2>
+      <h2>What I&apos;m Afraid Of</h2>
 
       <p>
         Becoming a boring adult who forgets who he really is: someone who loves building things, learning constantly, 
-        and playing with ideas. That's the person I intend to stay, no matter what.
+        and playing with ideas. That&apos;s the person I intend to stay, no matter what.
       </p>
 
       <p>
-        If any of this resonates with you—whether you're building something, hiring, or just want to chat—
-        feel free to reach out. I'm always happy to connect with interesting people.
+        If any of this resonates with you—whether you&apos;re building something, hiring, or just want to chat—
+        feel free to reach out. I&apos;m always happy to connect with interesting people.
       </p>
 
     </PageWrapper>

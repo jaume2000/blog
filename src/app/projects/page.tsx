@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 
 function Projects() {
   return (
-    <PageWrapper title="Mycropsace, my current project">
+    <PageWrapper title="Mycrospace, my current project">
       <h2>Mycrospace</h2>
       <p>
-        <a href="https://mycrospace.es" target="_blank" rel="noopener noreferrer">Mycrospace</a> is a biotech startup I co-founded in early 2024. I lead as CTO, and together with my co-founder we’re building the first AI-powered platform for microbiology labs: from plate to report.
+        <a href="https://mycrospace.es" target="_blank" rel="noopener noreferrer">Mycrospace</a> is a biotech startup I co-founded in early 2024. I lead as CTO, and together with my co-founder we&apos;re building the first AI-powered platform for microbiology labs: from plate to report.
       </p>
 
       <h3>The problem</h3>
@@ -26,7 +26,7 @@ function Projects() {
 
       <h3>What we built</h3>
       <p>
-        We built a full-stack product so labs can photograph a plate and get counts and analysis in seconds. The core challenge was high-density colony counting: when hundreds of colonies overlap on one plate, simple detection isn’t enough. I formulated the problem as density estimation and designed proprietary Density Map Regressors with Bayesian priors, and separately trained Object Detection models that reach 95% median accuracy against expert microbiologist annotations.
+        We built a full-stack product so labs can photograph a plate and get counts and analysis in seconds. The core challenge was high-density colony counting: when hundreds of colonies overlap on one plate, simple detection isn&apos;t enough. I formulated the problem as density estimation and designed proprietary Density Map Regressors with Bayesian priors, and separately trained Object Detection models that reach 95% median accuracy against expert microbiologist annotations.
       </p>
       <p>
         On the engineering side, I own the whole pipeline: PyTorch training framework, data pipelines, containerized inference on GCP, REST APIs (NestJS, Prisma), and the user-facing web app (Next.js, TypeScript). We also curated a domain-specific dataset of 3,500 annotated images across 12 microbial species and co-designed annotation protocols with microbiologists to keep ground truth reliable.
