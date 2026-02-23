@@ -1,10 +1,9 @@
 import { MetadataRoute } from 'next';
 import { getBlogPosts } from '@/lib/blog';
-
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://jaumeivars.com');
+import { getBaseUrl } from '@/lib/site-url';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = getBaseUrl();
   const blogEn = getBlogPosts('en');
   const blogEs = getBlogPosts('es');
 
