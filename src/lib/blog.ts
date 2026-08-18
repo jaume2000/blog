@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 export type BlogLocale = 'en' | 'es';
+export type LearningNotesLocale = 'en'
 
 interface BlogPost {
   slug: string;
@@ -10,25 +11,44 @@ interface BlogPost {
   excerpt: string;
 }
 
-function getBlogDirectory(locale: BlogLocale): string {
-  return path.join(process.cwd(), 'public', 'blog', locale);
+type LearningNotePost = BlogPost
+
+function getDirectory(locale: BlogLocale, folder='blog'): string {
+  return path.join(process.cwd(), 'public', folder, locale);
 }
 
 export function getBlogPosts(locale: BlogLocale): BlogPost[] {
-  const dir = getBlogDirectory(locale);
+  const dir = getDirectory(locale, 'blog');
   if (!fs.existsSync(dir)) return [];
 
   const fileNames = fs.readdirSync(dir);
   const allPostsData = fileNames
     .filter((fileName) => fileName.endsWith('.md'))
-    .map((fileName) => getBlogPostBySlug(fileName.replace(/\.md$/, ''), locale));
+    .map((fileName) => getPostBySlug(fileName.replace(/\.md$/, ''), locale));
 
   return allPostsData.filter((post): post is BlogPost => post !== null);
 }
 
-export function getBlogPostBySlug(slug: string, locale: BlogLocale): BlogPost | null {
+function getLearningNoteDirectory(locale: LearningNotesLocale): string {
+  return path.join(process.cwd(), 'public', 'learning_recs', locale);
+}
+
+export function getLearningNotesPosts(locale: LearningNotesLocale): LearningNotePost[] {
+  const dir = getLearningNoteDirectory(locale);
+  console.log(dir)
+  if (!fs.existsSync(dir)) return [];
+
+  const fileNames = fs.readdirSync(dir);
+  const allPostsData = fileNames
+    .filter((fileName) => fileName.endsWith('.md'))
+    .map((fileName) => getPostBySlug(fileName.replace(/\.md$/, ''), locale, 'learning_recs'));
+
+  return allPostsData.filter((post): post is LearningNotePost => post !== null);
+}
+
+export function getPostBySlug(slug: string, locale: BlogLocale, folder:string= 'blog'): BlogPost | null {
   try {
-    const fullPath = path.join(getBlogDirectory(locale), `${slug}.md`);
+    const fullPath = path.join(getDirectory(locale, folder), `${slug}.md`);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
 
     const lines = fileContents.split('\n');

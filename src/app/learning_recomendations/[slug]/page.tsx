@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
-import PageWrapper from '../../../../components/PageWrapper';
+import PageWrapper from '../../../components/PageWrapper';
 import ReactMarkdown from 'react-markdown';
-import { getPostBySlug, type BlogLocale } from '../../../../lib/blog';
+import { getPostBySlug, type LearningNotesLocale } from '../../../lib/blog';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-const VALID_LOCALES: BlogLocale[] = ['en', 'es'];
+const LOCALE: LearningNotesLocale = 'en';
 
 function isValidSlug(slug: string): boolean {
   return !slug.includes('.');
@@ -15,11 +15,11 @@ function isValidSlug(slug: string): boolean {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ lang: string; slug: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { lang, slug } = await params;
-  if (!VALID_LOCALES.includes(lang as BlogLocale) || !isValidSlug(slug)) return {};
-  const post = getPostBySlug(slug, lang as BlogLocale);
+  const { slug } = await params;
+  if (!isValidSlug(slug)) return {};
+  const post = getPostBySlug(slug, LOCALE, 'learning_recs');
   if (!post) return {};
   return {
     title: post.title,
@@ -28,15 +28,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPost({
+export default async function LearningNotePage({
   params,
 }: {
-  params: Promise<{ lang: string; slug: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { lang, slug } = await params;
-  if (!VALID_LOCALES.includes(lang as BlogLocale) || !isValidSlug(slug)) notFound();
+  const { slug } = await params;
+  if (!isValidSlug(slug)) notFound();
 
-  const post = getPostBySlug(slug, lang as BlogLocale);
+  const post = getPostBySlug(slug, LOCALE, 'learning_recs');
 
   if (!post) {
     notFound();

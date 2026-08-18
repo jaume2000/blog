@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Jaume Ivars Grimalt",
   },
   description: "Jaume Ivars Grimalt is a computer scientist specialized in deep learning computer vision models for various tasks such as object detection and image generation. He is the CTO of Mycrospace and has large experience on developing webpages with MERN stack. He studied in the UPV in Valencia and has one of the best academic expedients of his promotion.",
-  icons: "favicon.png",
+  icons: "/favicon.png",
   openGraph: {
     type: "website",
     locale: "en",
