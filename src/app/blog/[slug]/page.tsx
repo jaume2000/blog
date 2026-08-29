@@ -1,12 +1,9 @@
 import { notFound } from 'next/navigation';
-import PageWrapper from '../../../components/PageWrapper';
 import ReactMarkdown from 'react-markdown';
-import { getPostBySlug, type LearningNotesLocale } from '../../../lib/blog';
+import PageWrapper from '@/components/PageWrapper';
+import { getPostBySlug } from '@/lib/blog';
+import { pageMeta } from '@/lib/metadata';
 import type { Metadata } from 'next';
-
-export const dynamic = 'force-dynamic';
-
-const LOCALE: LearningNotesLocale = 'en';
 
 function isValidSlug(slug: string): boolean {
   return !slug.includes('.');
@@ -19,16 +16,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   if (!isValidSlug(slug)) return {};
-  const post = getPostBySlug(slug, LOCALE, 'learning_recs');
+  const post = getPostBySlug(slug);
   if (!post) return {};
-  return {
+  return pageMeta({
     title: post.title,
-    description: post.excerpt,
-    robots: { index: true, follow: true },
-  };
+    description: post.excerpt || post.title,
+    path: `/blog/${slug}`,
+  });
 }
 
-export default async function LearningNotePage({
+export default async function BlogPost({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -36,17 +33,14 @@ export default async function LearningNotePage({
   const { slug } = await params;
   if (!isValidSlug(slug)) notFound();
 
-  const post = getPostBySlug(slug, LOCALE, 'learning_recs');
-
-  if (!post) {
-    notFound();
-  }
+  const post = getPostBySlug(slug);
+  if (!post) notFound();
 
   return (
-    <PageWrapper title={post.title}>
-      <div className="prose dark:prose-invert max-w-none">
+    <main id="main">
+      <PageWrapper title={post.title}>
         <ReactMarkdown>{post.content}</ReactMarkdown>
-      </div>
-    </PageWrapper>
+      </PageWrapper>
+    </main>
   );
 }

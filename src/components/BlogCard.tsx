@@ -1,27 +1,27 @@
-import React from 'react';
 import Link from 'next/link';
 
 interface BlogCardProps {
   title: string;
   excerpt: string;
   slug: string;
-  lang: 'en' | 'es';
   href?: string;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ title, excerpt, slug, lang, href }) => {
+export default function BlogCard({ title, excerpt, slug, href }: BlogCardProps) {
   return (
-    <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:scale-105 bg-white dark:bg-gray-800 h-full flex flex-col">
-      <h2 className="text-lg font-bold mb-3 line-clamp-2">{title}</h2>
-      <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm flex-grow line-clamp-3">{excerpt}</p>
-      <Link 
-        href={href ?? `/blog/${lang}/${slug}`} 
-        className="text-blue-600 dark:text-blue-400 hover:underline mt-auto font-medium"
+    <article className="flex h-full flex-col rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+      <h2 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
+        {title}
+      </h2>
+      <p className="mt-2 flex-1 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+        {excerpt}
+      </p>
+      <Link
+        href={href ?? `/blog/${slug}`}
+        className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-900 dark:text-neutral-100 dark:decoration-neutral-600"
       >
-        {lang === 'es' ? 'Leer más →' : 'Read more →'}
+        Read more
       </Link>
-    </div>
+    </article>
   );
-};
-
-export default BlogCard;
+}

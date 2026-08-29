@@ -1,26 +1,20 @@
-import Link from 'next/link'
-import React from 'react'
-import {Undo2} from 'lucide-react'
+import React from 'react';
 
-function PageWrapper({title, children}:{title:string,children:React.ReactNode}) {
+function PageWrapper({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className='w-full'>
-        <div className="page_wrapper_header_decoration p-2">
-          <Link href="/"><Undo2 width={40} height={40} color="white"/></Link>
-        </div>
-        <div className='page_wrapper_header'>
-            <h1>{title}</h1>
-        </div>
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="prose dark:prose-invert prose-lg mx-auto page_wrapper_content">
-              {children}
-            </div>
-        </div>
-        <div className='w-full h-64'>
-
-        </div>
+    <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+      <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl dark:text-neutral-100">
+        {title}
+      </h1>
+      <div className="prose prose-neutral mt-8 max-w-none dark:prose-invert">{children}</div>
     </div>
-  )
+  );
 }
 
-export default PageWrapper
+export default PageWrapper;
