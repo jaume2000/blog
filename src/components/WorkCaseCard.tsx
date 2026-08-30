@@ -7,7 +7,7 @@ export default function WorkCaseCard({ workCase }: { workCase: WorkCase }) {
       <h3 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
         {workCase.title}
       </h3>
-      {workCase.homeMetric && (
+      {workCase.homeMetric ? (
         <>
           <p className="mt-3 text-2xl font-semibold tabular-nums tracking-tight text-neutral-900 dark:text-neutral-100">
             {workCase.homeMetric.number}
@@ -16,6 +16,10 @@ export default function WorkCaseCard({ workCase }: { workCase: WorkCase }) {
             {workCase.homeMetric.label}
           </p>
         </>
+      ) : (
+        <p className="mt-3 flex-1 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+          {workCase.homeNote}
+        </p>
       )}
       <Link
         href={`/work#${workCase.slug}`}

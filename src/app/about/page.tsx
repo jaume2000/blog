@@ -1,10 +1,17 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import CtaButton from '@/components/CtaButton';
 import { ABOUT } from '@/content/about';
 import { META, SITE } from '@/content/site';
 import { pageMeta } from '@/lib/metadata';
 
+// The nav header, footer and full metadata (canonical, og:image, og:url, twitter)
+// come from src/app/layout.tsx and lib/metadata.ts, same as every other page.
+//
+// /learning is linked from here and from nowhere else. Decision: keep it out of the
+// main nav. The nav is the sales path (Home, Services, Work, About) and study
+// roadmaps do not help anyone decide to hire. It stays indexable via the sitemap.
 export const metadata: Metadata = pageMeta({
   title: META.aboutTitle,
   description: META.aboutDescription,
@@ -26,100 +33,90 @@ export default function AboutPage() {
           <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl dark:text-neutral-100">
             {ABOUT.title}
           </h1>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
-            {ABOUT.lead}
-          </p>
+          <div className="mt-3 max-w-xl space-y-2 text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
+            {ABOUT.intro.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+          </div>
         </div>
       </div>
 
-      {ABOUT.sections.map((section) => (
-        <section key={section.heading} className="mt-12">
-          <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-            {section.heading}
-          </h2>
-          <div className="mt-4 space-y-3 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-            {section.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </div>
-        </section>
-      ))}
-
       <section className="mt-12">
         <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-          {ABOUT.trackHeading}
+          {ABOUT.pathHeading}
         </h2>
-        <p className="mt-4 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-          {ABOUT.trackLead}
-        </p>
-        <ol className="mt-6 space-y-8 border-l border-neutral-200 pl-6 dark:border-neutral-800">
-          {ABOUT.track.map((item) => (
-            <li key={item.org}>
-              <p className="text-base font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                {item.org}
-              </p>
-              <p className="mt-0.5 text-sm text-neutral-600 dark:text-neutral-400">
-                {item.role} · {item.period}
-              </p>
-              <p className="mt-2 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-                {item.note}
-              </p>
+        <ul className="mt-4 space-y-3 border-l border-neutral-200 pl-6 text-base leading-relaxed text-neutral-700 dark:border-neutral-800 dark:text-neutral-300">
+          {ABOUT.path.map((line) => (
+            <li key={line}>
+              {line}
+              {line.includes('Tapstar') && (
+                <>
+                  {' '}
+                  <Link
+                    href={ABOUT.pathWorkLink.href}
+                    className="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-900 dark:text-neutral-100 dark:decoration-neutral-600"
+                  >
+                    {ABOUT.pathWorkLink.label}
+                  </Link>
+                  .
+                </>
+              )}
             </li>
           ))}
-        </ol>
+        </ul>
       </section>
 
       <section className="mt-12">
         <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-          {ABOUT.educationHeading}
+          {ABOUT.workHeading}
         </h2>
-        <ol className="mt-6 space-y-8 border-l border-neutral-200 pl-6 dark:border-neutral-800">
-          {ABOUT.education.map((item) => (
-            <li key={item.degree}>
-              <p className="text-base font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                {item.degree}
-              </p>
-              <p className="mt-0.5 text-sm text-neutral-600 dark:text-neutral-400">
-                {item.school} · {item.period}
-              </p>
-              <p className="mt-2 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-                {item.note}
-              </p>
-            </li>
+        <div className="mt-4 space-y-4 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+          {ABOUT.work.map((item) => (
+            <p key={item.body}>
+              {item.body}
+              {'link' in item && item.link && (
+                <>
+                  {' '}
+                  <Link
+                    href={item.link.href}
+                    className="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-900 dark:text-neutral-100 dark:decoration-neutral-600"
+                  >
+                    {item.link.label}
+                  </Link>
+                </>
+              )}
+            </p>
           ))}
-        </ol>
+        </div>
       </section>
-
-      {ABOUT.sectionsAfter.map((section) => (
-        <section key={section.heading} className="mt-12">
-          <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-            {section.heading}
-          </h2>
-          <div className="mt-4 space-y-3 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-            {section.paragraphs.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
-          </div>
-        </section>
-      ))}
 
       <section className="mt-12">
         <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-          {ABOUT.learningHeading}
+          {ABOUT.outsideHeading}
         </h2>
         <p className="mt-4 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-          {ABOUT.learningLead}{' '}
+          {ABOUT.outside}{' '}
           <Link
-            href="/learning"
-            className="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 hover:decoration-neutral-900 dark:text-neutral-100 dark:decoration-neutral-600"
+            href={ABOUT.outsideLink.href}
+            className="text-neutral-600 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-900 dark:text-neutral-400 dark:decoration-neutral-600 dark:hover:text-neutral-100"
           >
-            {ABOUT.learningLinkLabel}
+            {ABOUT.outsideLink.label}
           </Link>
           .
         </p>
       </section>
 
-      <p className="mt-16 text-sm text-neutral-500">
+      <section className="mt-16 border-t border-neutral-200 pt-12 dark:border-neutral-800">
+        <h2 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
+          {ABOUT.ctaHeading}
+        </h2>
+        <p className="mt-3 text-base text-neutral-600 dark:text-neutral-400">{ABOUT.ctaBody}</p>
+        <div className="mt-6">
+          <CtaButton />
+        </div>
+      </section>
+
+      <p className="mt-12 text-sm text-neutral-500">
         <a
           href={SITE.resumeUrl}
           className="underline decoration-neutral-300 underline-offset-4 hover:text-neutral-800 hover:decoration-neutral-800 dark:hover:text-neutral-300"

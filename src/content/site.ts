@@ -16,16 +16,21 @@ export const SITE = {
 } as const
 
 export const HOME_COPY = {
-  headline:
-    'Need a custom AI product? I don\'t just train models. I build whole products that clients can use.',
+  headline: 'Train the model, ship the product.',
   subhead:
-    'I can build and train your custom AI model, put it efficiently in production, and build an interface your users will love.',
-  problemTitle: 'The problem I solve',
+    'I train your custom AI model, put it in production, and build the interface your users open every day.',
+  // Recommendation, on whether to rewrite this section or delete it: rewrite, which is
+  // what this is. Deleting it makes the home jump from the headline straight into the
+  // services grid, and the visitor never reads a sentence about their own situation
+  // before being sold to. /services describes the packages; this section is the only
+  // place that names the failure the buyer already recognises. It earns its space as
+  // long as it talks about them and not about me.
+  problemTitle: 'Why these projects stall',
   problem: [
-    'Specific dataset curation: I know how to create large datasets for custom AI models efficiently.',
-    'Specialized AI architecture and fine-tuning: I can build and train your custom AI model efficiently.',
-    'Cloud deployment and infrastructure: I can deploy your model in the cloud and make it accessible to your users.',
-    'User interface design and development: I can build an interface your users will love.',
+    'You have data. What you do not have is a labelled dataset a model can learn from, and nobody wants to own that part, so the project stalls before training starts.',
+    'A general-purpose API cannot help, because the thing you need recognised only exists in your own data and no public model has ever seen it.',
+    'The model scores well in a notebook and nowhere else. Putting it behind an API with monitoring is a separate job, and it is the one that never got scoped.',
+    'It finally runs, and your team still cannot use it, because there is no screen. So it goes back on the shelf.',
   ],
   servicesTitle: 'Services',
   workTitle: 'Selected work',
@@ -48,7 +53,7 @@ export const META = {
     'Case studies: Mycrospace, a biotech AI product I built as CTO and that five laboratories run in production, and ConvNeXt-V1 trained from scratch to 81% top-1 on ImageNet-1k at EuroHPC Leonardo.',
   aboutTitle: 'About',
   aboutDescription:
-    'Jaume Ivars is CTO of Mycrospace. He trains models, ships them to production, and builds the apps people use — remote from Valencia.',
+    'ML engineer and CTO of Mycrospace. I train models, deploy them, and build the product around them. Remote from Valencia.',
   learningTitle: 'Learning roadmaps',
   learningDescription:
     'Study roadmaps for computer vision and deep learning: CNN and transformer detectors, foundational image models, modern LLMs, diffusion models, and quantum mechanics.',

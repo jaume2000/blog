@@ -3,8 +3,11 @@ import { SITE } from './site'
 export interface WorkCase {
   slug: string
   title: string
-  /** Only cases with a hard number get a card on the home page. */
+  showOnHome?: boolean
+  /** Rendered as the big figure on the home card. Omit when there is no hard number yet. */
   homeMetric?: { number: string; label: string }
+  /** Fallback line for home cards with no metric. */
+  homeNote?: string
   link?: { href: string; label: string }
   context: string[]
   built: string[]
@@ -16,6 +19,7 @@ export const WORK_CASES: WorkCase[] = [
   {
     slug: 'mycrospace',
     title: 'Mycrospace',
+    showOnHome: true,
     homeMetric: { number: '5', label: 'laboratories running it in production' },
     link: { href: SITE.mycrospaceUrl, label: 'mycrospace.es' },
     context: [
@@ -43,6 +47,11 @@ export const WORK_CASES: WorkCase[] = [
   {
     slug: 'tapstar',
     title: 'Tapstar',
+    showOnHome: true,
+    // TODO: add a homeMetric once there is a real number for this engagement
+    // (businesses onboarded, scans processed, whatever Tapstar can share).
+    // Until then the card runs on homeNote so nothing is invented.
+    homeNote: 'Freelance engagement. QR product software, shipped end to end in four months.',
     context: [
       'Freelance engagement, January to May 2025.',
       'Tapstar sells QR cards and stands to restaurants, shoe shops and other high-street businesses. They had the physical product. What they did not have was the software that makes a piece of printed plastic worth paying for.',
@@ -85,6 +94,7 @@ export const WORK_CASES: WorkCase[] = [
   {
     slug: 'convnext-leonardo',
     title: 'ConvNeXt-V1 from scratch on Leonardo',
+    showOnHome: true,
     homeMetric: {
       number: '81%',
       label: 'top-1 on ImageNet-1k, trained from scratch on 4 GPUs',
@@ -113,4 +123,4 @@ export const WORK_CASES: WorkCase[] = [
   },
 ]
 
-export const HOME_WORK_CASES = WORK_CASES.filter((workCase) => workCase.homeMetric)
+export const HOME_WORK_CASES = WORK_CASES.filter((workCase) => workCase.showOnHome)

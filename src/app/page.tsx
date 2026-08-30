@@ -39,7 +39,7 @@ export default function Home() {
         <h2 className="text-sm font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
           {HOME_COPY.workTitle}
         </h2>
-        <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {HOME_WORK_CASES.map((workCase) => (
             <WorkCaseCard key={workCase.slug} workCase={workCase} />
           ))}

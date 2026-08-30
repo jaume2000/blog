@@ -39,10 +39,25 @@ export default function ServicesMap({
     highlightCloud = null,
 }: ServiceMapProps) {
     
+    // role="img" plus aria-label makes this a single leaf node in the accessibility
+    // tree, so screen readers announce the sentence below instead of reading the
+    // block labels as loose, unpunctuated text.
+    //
+    // The <text> labels stay in the DOM because they are the diagram. Removing them
+    // would leave empty boxes. They read as one run in plain-text extraction, which
+    // is a text-extraction artifact rather than a markup bug, and every token in it
+    // ("dataset", "backend", "AI model", "cloud infrastructure") is a term this page
+    // should rank for anyway. If it ever needs to be truly invisible to crawlers the
+    // fix is a rasterised image with an alt, and that loses the hover highlighting.
     return (
         <svg
         viewBox="0 0 466.99 136.79"
+        role="img"
+        aria-label="Diagram of an AI product stack: raw data feeds a curated dataset, the dataset trains the AI model, the model is exposed as an AI service, and the backend, database and user interface sit on top, all running on cloud infrastructure."
     >
+        <title>
+            {'How the pieces of an AI product fit together'}
+        </title>
         <defs>
         <linearGradient id="services-clean_svg__g">
             <stop
