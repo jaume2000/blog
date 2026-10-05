@@ -1,5 +1,5 @@
 'use client'
-import { HOME_COPY } from '@/content/site'
+import { FREELANCE_COPY } from '@/content/site'
 import React, { useState } from 'react'
 import ServicesMap from './ServicesMap'
 import { ServiceHighlight, SERVICES } from '@/content/services'
@@ -49,7 +49,7 @@ export default function ServicesSection() {
     return (
         <section className="mt-16 sm:mt-20">
             <h2 className="text-sm font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
-                {HOME_COPY.servicesTitle}
+                {FREELANCE_COPY.servicesTitle}
             </h2>
             <ServicesMap
                 highlightFrontend={highlightState.frontend}

@@ -15,7 +15,7 @@ export const SITE = {
   mycrospaceUrl: 'https://mycrospace.es',
 } as const
 
-export const HOME_COPY = {
+export const FREELANCE_COPY = {
   headline: 'Train the model, ship the product.',
   subhead:
     'I train your custom AI model, put it in production, and build the interface your users open every day.',
@@ -42,8 +42,11 @@ export const HOME_COPY = {
 } as const
 
 export const META = {
-  homeTitle: 'Jaume Ivars — Train the model, ship the product',
+  homeTitle: 'Jaume Ivars — Research, reflections and ideas',
   homeDescription:
+    'Jaume Ivars Grimalt: ML engineer and CTO of Mycrospace, in Valencia. Research in computer vision, essays on AI, consciousness and society, and the ideas I keep coming back to.',
+  freelanceTitle: 'Freelance — Train the model, ship the product',
+  freelanceDescription:
     'I train your AI model, put it in production, and build the interface your people use. ML, backend, infra, frontend, and mobile — one person, the full cycle.',
   servicesTitle: 'Services',
   servicesDescription:

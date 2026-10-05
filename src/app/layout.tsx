@@ -5,6 +5,7 @@ import { META, SITE } from '@/content/site';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import JsonLd from '@/components/JsonLd';
+import 'katex/dist/katex.min.css';
 import './globals.css';
 
 const geistSans = Geist({
@@ -76,8 +77,8 @@ function structuredData(baseUrl: string) {
         '@type': 'ProfessionalService',
         '@id': `${baseUrl}/#service`,
         name: `${SITE.name} — AI product engineering`,
-        url: baseUrl,
-        description: META.homeDescription,
+        url: `${baseUrl}/freelance`,
+        description: META.freelanceDescription,
         image: `${baseUrl}${SITE.ogImage}`,
         email: SITE.email,
         areaServed: 'Worldwide',

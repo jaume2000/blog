@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { NavLink } from '@/components/nav-links';
+import { isNavLinkActive, type NavLink } from '@/components/nav-links';
 
 export default function DesktopNav({ links }: { links: NavLink[] }) {
   const pathname = usePathname();
@@ -10,10 +10,7 @@ export default function DesktopNav({ links }: { links: NavLink[] }) {
   return (
     <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
       {links.map((link) => {
-        const current =
-          link.href === '/'
-            ? pathname === '/'
-            : pathname === link.href || pathname.startsWith(`${link.href}/`);
+        const current = isNavLinkActive(link, pathname);
         return (
           <Link
             key={link.href}

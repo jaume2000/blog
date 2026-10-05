@@ -48,6 +48,10 @@ body {
   border-radius: 0.25rem;
 }
 
+.katex {
+  color: inherit;
+}
+
 .prose a {
   text-decoration: underline;
   text-underline-offset: 3px;
