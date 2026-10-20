@@ -186,24 +186,25 @@ export default function RepresentationDynamicsPage() {
         number={1}
         caption={
           <>
-            Stage 3 of two ConvNeXt-T trained from scratch on ImageNet, seen through the first two principal
-            components of their states. 200 validation images, 20 from each of 10 classes; each state is randomly
-            projected to 2,048 dimensions before the PCA, and the massive channel (section 7) is left out. Each thin
-            line is the trajectory <InlineMath tex="x(t)" /> of one image, coloured by depth{' '}
-            <InlineMath tex="t" />. The thick lines are a snow leopard, an airliner and a daisy, with a white dot at
-            every integer <InlineMath tex="t" />, where the original network switches block. Bottom: mean speed{' '}
-            <InlineMath tex="\|f(x(t))\|" />, with the 10th to 90th percentile band. Left: weight-tied network, 100
-            Euler steps of 0.09. The dots spread out and close up again: slow start, fast middle, braking end.
-            Right: original network, every block expanded into 100 steps of 0.01. The paths bend at the dots and
-            the speed jumps at every switch. Each PCA is fitted on its own network, so the axes are not comparable.
+            Stage 3 of two ConvNeXt-T trained from scratch on ImageNet, integrated in sync on the same depth clock{' '}
+            <InlineMath tex="t \in [0, 9]" /> and seen through the first two principal components of their states.
+            200 validation images, 20 from each of 10 classes; each state is randomly projected to 2,048 dimensions
+            before the PCA, and the massive channel (section 7) is left out. Each thin line is the trajectory{' '}
+            <InlineMath tex="x(t)" /> of one image, coloured by depth and glowing where the point has just been.
+            The thick lines are a snow leopard, an airliner and a daisy; they leave a white dot at every integer{' '}
+            <InlineMath tex="t" />, where the original network switches block. Bottom: mean speed{' '}
+            <InlineMath tex="\|f(x(t))\|" />. Left: weight-tied network, 100 Euler steps of 0.09. The fan opens
+            early and smoothly, and the dots spread out and close up again: slow start, fast middle, braking end.
+            Right: original network, every block expanded into 100 steps of 0.01. Halfway through the stage it has
+            barely left the origin; most of its motion comes in the last blocks, the paths bend at the dots and the
+            speed jumps at every switch. Each PCA is fitted on its own network, so the axes are not comparable.
           </>
         }
       >
-        <Plot
-          src={`${ASSET_DIR}/hero-trajectories.png`}
-          alt="Stage-3 trajectories of 200 images in PCA, coloured by depth, for the weight-tied and the original ConvNeXt-T, with their speed over depth"
-          width={2223}
-          height={1143}
+        <Video
+          src={`${ASSET_DIR}/hero-trajectories.mp4`}
+          poster={`${ASSET_DIR}/hero-trajectories.jpg`}
+          label="Animated stage-3 trajectories of 200 images in PCA for the weight-tied and the original ConvNeXt-T, with their speed over depth"
         />
       </Figure>
       <P>
@@ -635,6 +636,58 @@ export default function RepresentationDynamicsPage() {
           height={1126}
         />
       </Figure>
+      <H3>The speed of the point</H3>
+      <P>
+        The simplest thing to measure is how fast the point moves: the length of the arrow under it,{' '}
+        <InlineMath tex="\|f(x(t))\|" />. It is the velocity field read along the trajectory, not the field
+        itself, which lives in all 75,264 dimensions and has an arrow at every location. Here it is over 500
+        images, with every channel included.
+      </P>
+      <Figure
+        number={10}
+        caption={
+          <>
+            Speed <InlineMath tex="\|f(x(t))\|" /> along stage 3, mean and 5th to 95th percentile over 500
+            validation images, all channels included. Solid: each block expanded into 100 steps (
+            <InlineMath tex="\Delta t = 0.01" />). Dashed with squares: one step per block (
+            <InlineMath tex="R=1" />), which only sees the speed at integer <InlineMath tex="t" />. Purple:
+            weight-tied network. Blue: original ConvNeXt-T. Dotted lines mark the block boundaries.
+          </>
+        }
+      >
+        <Plot
+          src={`${ASSET_DIR}/speed-n500.png`}
+          alt="Norm of the residual field along stage 3 for the shared and the original ConvNeXt-T, at one and at one hundred steps per block"
+          width={1500}
+          height={1018}
+        />
+      </Figure>
+      <P>
+        In the weight-tied network the speed is one bell: about 270 at the entrance of the stage, a peak of about
+        540 around <InlineMath tex="t \approx 4.2" />, and down to 160 at the exit. The curve is continuous because
+        the field is autonomous. The arrows never change; the point only speeds up or slows down because it moves
+        into regions where the arrows are longer or shorter. The one-step-per-block markers sit on that curve,
+        overshooting slightly at the peak (about 570 against 540), which is the error of a coarse Euler step.
+      </P>
+      <P>
+        The original network is where the expansion earns its keep. With one step per block (dashed), its speed
+        looks like a smooth growth from 18 to 600 over eight blocks, a point that keeps accelerating. With 100
+        steps per block (solid) that picture turns out to be false. The speed is a sawtooth: it jumps up at every
+        block switch, and inside the block it never grows. In the first blocks it stays flat; in the last ones it{' '}
+        <em>decays</em>. In the final block it falls from 690 to 425, so the point leaves the stage almost 40%
+        slower than it entered that block. Inside a block the point brakes or coasts; what accelerates it is the
+        switch to a new field. The dashed curve, which is all the original network
+        lets you see, hides the braking completely. The band also widens in the last three blocks: how fast the
+        point moves at the end depends on the image much more than at the beginning, consistent with a network
+        that commits late.
+      </P>
+      <P>
+        These numbers are dominated by the massive channel of section 7, which is why they are about ten times
+        larger than the speeds in Figure 1, and why the shared network already starts at 270. Without the channel
+        the shapes survive: a bell from 50 to 75 and back to 42 in the shared network, and steps from 17 to more
+        than 100 in the original one (Figure 1, bottom).
+      </P>
+      <H3>Coordinate by coordinate</H3>
       <P>
         The extra resolution is not a cosmetic upgrade. It decides what you conclude. The figure below follows
         individual coordinates of the stage-3 state, pooled over the same 500 images. For each image I keep the
@@ -651,7 +704,7 @@ export default function RepresentationDynamicsPage() {
         its final value. <InlineMath tex="t_{50}" /> is the first time a coordinate is half-way there.
       </P>
       <Figure
-        number={10}
+        number={11}
         caption={
           <>
             Per-coordinate dynamics of stage 3, 500 images. In each block of panels, top row: shared network; bottom
@@ -728,7 +781,7 @@ export default function RepresentationDynamicsPage() {
         the paths bend at every block boundary.
       </P>
       <Figure
-        number={11}
+        number={12}
         caption={
           <>
             Same 200 images and projection as Figure 1, coloured by class. Top: weight-tied network. Bottom:
@@ -760,7 +813,7 @@ export default function RepresentationDynamicsPage() {
         one, integrated over the same nine units of depth and played in sync.
       </P>
       <Figure
-        number={12}
+        number={13}
         caption={
           <>
             Snow-leopard image, <InlineMath tex="\Delta t = 0.01" />, massive channel removed; the left and right
@@ -786,7 +839,7 @@ export default function RepresentationDynamicsPage() {
       </Figure>
       <H3>Independent blocks undo each other</H3>
       <P>
-        Look again at the ConvNeXt-T rows of Figure 10. The median coordinate of the original network does not progress
+        Look again at the ConvNeXt-T rows of Figure 11. The median coordinate of the original network does not progress
         smoothly: many coordinates overshoot, come back, and go out again, and most of them only commit to their final
         value in the last two blocks (median <InlineMath tex="t_{50}" /> = 7.2). To quantify it, take the
         displacement of each block, <InlineMath tex="\Delta x_k = x(k+1) - x(k)" />, coordinate by coordinate:
@@ -832,7 +885,7 @@ export default function RepresentationDynamicsPage() {
       </P>
       <H3>One image, all channels</H3>
       <Figure
-        number={13}
+        number={14}
         caption={
           <>
             Shared network, 100 Euler steps over <em>T</em> = 9, for the validation image on the left. Per-channel residual
@@ -884,7 +937,7 @@ export default function RepresentationDynamicsPage() {
         as such.
       </P>
       <Figure
-        number={14}
+        number={15}
         caption={
           <>
             Shared network, all channels, one image. Left to right, top to bottom: acceleration decomposition
@@ -902,7 +955,7 @@ export default function RepresentationDynamicsPage() {
         </div>
       </Figure>
       <Figure
-        number={15}
+        number={16}
         caption={
           <>
             ConvNeXt-T, <InlineMath tex="R=100" />, all channels. Left: fraction of acceleration that is tangential
@@ -931,7 +984,7 @@ export default function RepresentationDynamicsPage() {
         median 98% of the energy of the state.
       </P>
       <Figure
-        number={16}
+        number={17}
         caption="Norm of each of the 384 channels at the exit of stage 3, shared network, one image."
       >
         <Plot
@@ -950,7 +1003,7 @@ export default function RepresentationDynamicsPage() {
         <InlineMath tex="h" /> at the start to 96% at the end.
       </P>
       <Figure
-        number={17}
+        number={18}
         caption="Top-1 channel by norm of h, per image, over 200 validation images. ConvNeXt variants and Swin always pick the same channel; ResNets do not."
       >
         <Plot
@@ -1009,7 +1062,7 @@ export default function RepresentationDynamicsPage() {
         ), while <InlineMath tex="\|h\|/\|x\|" /> fades from 0.42 to 0.09. A drift that turns and dies out.
       </P>
       <Figure
-        number={18}
+        number={19}
         caption={
           <>
             Shared network after the ignore path (channel 236 removed from the metric). Top: <InlineMath tex="a_n" />{' '}
@@ -1028,7 +1081,7 @@ export default function RepresentationDynamicsPage() {
         </div>
       </Figure>
       <Figure
-        number={19}
+        number={20}
         caption={
           <>
             ConvNeXt-T, <InlineMath tex="R=100" />, ignore path (channel 195 removed). Left: inside each block{' '}
@@ -1044,8 +1097,8 @@ export default function RepresentationDynamicsPage() {
         </div>
       </Figure>
       <Figure
-        number={20}
-        caption="Shared network, same image and integration as Figure 13, with channel 236 removed. What was hidden underneath is a family of smooth, curved trajectories."
+        number={21}
+        caption="Shared network, same image and integration as Figure 14, with channel 236 removed. What was hidden underneath is a family of smooth, curved trajectories."
       >
         <Plot
           src={`${ASSET_DIR}/spaghetti-shared-no-ch236.png`}
@@ -1055,7 +1108,7 @@ export default function RepresentationDynamicsPage() {
         />
       </Figure>
       <Figure
-        number={21}
+        number={22}
         caption={
           <>
             Per-channel mean of <em>h</em> while integrating the shared network. Left: all channels, where channel
@@ -1077,7 +1130,7 @@ export default function RepresentationDynamicsPage() {
         </div>
       </Figure>
       <Figure
-        number={22}
+        number={23}
         caption={
           <>
             Spatial map of ‖<em>h</em>‖ over the 14 × 14 feature grid during integration. Left: shared network, one
@@ -1128,7 +1181,7 @@ export default function RepresentationDynamicsPage() {
         they have their own weight decay pulling them back towards it. Then the whole model is fine-tuned.
       </P>
       <Figure
-        number={23}
+        number={24}
         caption={
           <>
             Fine-tuning the shared network with per-block deltas. Dashed lines: the shared network the runs start
@@ -1161,7 +1214,7 @@ export default function RepresentationDynamicsPage() {
         not stay small. By the end of the best run they average {(FINAL.deltaRatioEnd * 100).toFixed(0)}% of the norm
         of the shared weights.
       </P>
-      <Figure number={24} caption="Relative size of the deltas during the best run, averaged over blocks and layers.">
+      <Figure number={25} caption="Relative size of the deltas during the best run, averaged over blocks and layers.">
         <LineChart
           ariaLabel="Delta-to-shared weight norm ratio during fine-tuning"
           series={DELTA_RATIO}
