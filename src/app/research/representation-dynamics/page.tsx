@@ -11,6 +11,7 @@ import {
   DELTA_RATIO,
   DYNAMICS_N500,
   FINAL,
+  POOLED_N500,
   REFINE_BILINEAR,
   REFINE_PLAIN,
   REFINE_TABLE,
@@ -18,18 +19,19 @@ import {
   SHARED_HORIZON_SWEEP,
   TRAINING_CURVES,
   ZEROING,
-} from '@/content/research/delta-neural-ode';
+} from '@/content/research/representation-dynamics';
 import { SITE } from '@/content/site';
 import { pageMeta } from '@/lib/metadata';
 
-const TITLE = 'Residual vision networks learn nearly autonomous flows';
+const TITLE = 'All skip-connections can be expanded indefinitely';
+const SUBTITLE = 'An analysis of representation dynamics in vision models with differential geometry';
 const DESCRIPTION =
-  'DeltaNeuralODE: reading ConvNeXt, Swin and ResNet as Euler discretisations of an ODE. Refining depth without fine-tuning, why weight interpolation fails, one shared block for a whole stage, per-block deltas, and the massive activation behind the straight trajectories.';
+  'Every skip connection is one Euler step, so ConvNeXt, Swin and ResNet can be run with 100× more steps without fine-tuning. The refined networks expose the continuous trajectory of the representation: one shared block flows smoothly through the stage, independent blocks zig-zag and undo each other.';
 
 export const metadata: Metadata = pageMeta({
   title: TITLE,
   description: DESCRIPTION,
-  path: '/research/delta-neural-ode',
+  path: '/research/representation-dynamics',
 });
 
 const pct = (v: number) => v.toFixed(2);
@@ -96,15 +98,16 @@ const TOC = [
   ['refine', 'Refining pretrained networks'],
   ['interpolation', 'Plain versus bilinear interpolation'],
   ['shared', 'One block for the whole stage'],
-  ['deltas', 'Shared block plus per-block deltas'],
+  ['microscope', 'Why expand: depth at higher resolution'],
   ['dynamics', 'What the trajectories look like'],
   ['massive', 'Massive activations and the ignore path'],
+  ['deltas', 'Shared block plus per-block deltas'],
   ['droppath', 'Is drop path the reason?'],
   ['next', 'Open questions'],
   ['references', 'References'],
 ] as const;
 
-export default function DeltaNeuralOdePage() {
+export default function RepresentationDynamicsPage() {
   const zeroR1 = ZEROING.R1;
 
   return (
@@ -115,13 +118,102 @@ export default function DeltaNeuralOdePage() {
       <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-neutral-900 sm:text-4xl dark:text-neutral-100">
         {TITLE}
       </h1>
-      <p className="mt-4 text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-        Integrating ConvNeXt, Swin and ResNet at any depth without fine-tuning, sharing one block across a whole
-        stage, and the single channel that makes every trajectory look straighter than it is.
-      </p>
+      <p className="mt-2 text-xl leading-snug text-neutral-700 dark:text-neutral-300">{SUBTITLE}</p>
       <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
         {SITE.fullName} · Mycrospace AI Research, Valencia · Trained on the Leonardo supercomputer (CINECA, EuroHPC)
       </p>
+
+      <P>
+        Take a photo of a snow leopard, push it through a ConvNeXt and stop at the entrance of its third stage. At
+        that point the network no longer holds an image. It holds 384 channels on a 14 × 14 grid: 75,264 numbers.
+        I find it useful to stop thinking of them as a feature map and to think of them as a single{' '}
+        <strong>point</strong> <InlineMath tex="x \in \mathbb{R}^{75{,}264}" />. The nine blocks of the stage move
+        that point, and where it ends up is, in large part, what the network decides the image is.
+      </P>
+      <P>
+        Every block moves it in the same way. It looks at where the point is, computes a direction, and adds it:
+      </P>
+      <DisplayMath tex="x_{i+1} \;=\; x_i + f_i(x_i)." />
+      <P>
+        Anyone who has written a numerical solver recognises that line. It is one step of Euler&apos;s method, with
+        step size 1, for the differential equation <InlineMath tex="\dot x = f(x)" />. Read like that,{' '}
+        <InlineMath tex="f_i" /> is not a layer but a <em>vector field</em>: a rule that pins an arrow, a velocity, on
+        every location of that 75,264-dimensional space. The point does not jump from layer to layer; it is carried
+        along by the arrows, and the network is the path it draws. The idea is older than this project{' '}
+        <Cite ids={['e2017', 'haber2017', 'lu2018', 'chen2018']} />. What I wanted to know is whether it is
+        literally true of the networks we actually train, and what it buys us if it is.
+      </P>
+      <P>
+        The test is almost embarrassingly simple. If block <InlineMath tex="i" /> really is one Euler step of a field{' '}
+        <InlineMath tex="f_i" />, I should be able to replace it by a hundred steps of size 1/100 and land in
+        nearly the same place. I can, in ConvNeXt, Swin and ResNet, without retraining a single weight, and as far
+        as I push it. That is the title: every skip connection can be expanded indefinitely. The interesting part is
+        what the expansion gives in return. Nine snapshots become a continuous curve{' '}
+        <InlineMath tex="x(t),\ t \in [0, 9]" />, and the question stops being &ldquo;what does each block
+        output?&rdquo; and becomes &ldquo;how does the point move?&rdquo; How fast, whether it accelerates or brakes,
+        whether it goes straight or turns. Those are questions for differential geometry: velocity{' '}
+        <InlineMath tex="v = \dot x" />, acceleration <InlineMath tex="a = \ddot x" />, split into a tangential part
+        that changes the speed and a normal part that changes the direction, and curvature{' '}
+        <InlineMath tex="\kappa = a_n / \|v\|^2" />. None of them can be estimated from nine samples. All of them can
+        from nine hundred.
+      </P>
+      <P>
+        Seen this way, two kinds of network turn out to move in two very different ways. When the nine blocks of
+        the stage are one and the same block, which I call weight-tied or shared, there is a single field and it does
+        not depend on time:
+      </P>
+      <DisplayMath tex="\dot x = f(x)." />
+      <P>
+        That is an <strong>autonomous</strong> system. The arrows are fixed in space, and the point simply follows
+        them. Its velocity is continuous by construction, and what it does, for every image I have looked at, is
+        launch, push and brake: the speed rises, peaks around <InlineMath tex="t \approx 4" /> and fades, while the
+        classes fan out from a common origin (Figure 1, left).
+      </P>
+      <P>
+        In the original network every block has its own weights, so the field is
+      </P>
+      <DisplayMath tex="\dot x = f_{\lfloor t \rfloor}(x)," />
+      <P>
+        autonomous within each unit of time and replaced by a different one at every integer{' '}
+        <InlineMath tex="t" />: <strong>piecewise autonomous</strong>. Inside a block the point glides along a
+        smooth curve. At the boundary, all the arrows under it change at once, and so does its velocity. The jumps
+        are large. Across a block boundary 45% of the coordinates reverse the sign of their velocity, the
+        displacements of consecutive blocks are almost orthogonal (cosine 0.17 over 500 images), and the speed
+        climbs in steps from about 17 to over 100 (Figure 1, right). Both networks classify equally well. One gets
+        there by flowing, the other by a sequence of pushes in unrelated directions that partly undo each other.
+      </P>
+      <Figure
+        number={1}
+        caption={
+          <>
+            Stage 3 of two ConvNeXt-T trained from scratch on ImageNet, seen through the first two principal
+            components of their states. 200 validation images, 20 from each of 10 classes; each state is randomly
+            projected to 2,048 dimensions before the PCA, and the massive channel (section 7) is left out. Each thin
+            line is the trajectory <InlineMath tex="x(t)" /> of one image, coloured by depth{' '}
+            <InlineMath tex="t" />. The thick lines are a snow leopard, an airliner and a daisy, with a white dot at
+            every integer <InlineMath tex="t" />, where the original network switches block. Bottom: mean speed{' '}
+            <InlineMath tex="\|f(x(t))\|" />, with the 10th to 90th percentile band. Left: weight-tied network, 100
+            Euler steps of 0.09. The dots spread out and close up again: slow start, fast middle, braking end.
+            Right: original network, every block expanded into 100 steps of 0.01. The paths bend at the dots and
+            the speed jumps at every switch. Each PCA is fitted on its own network, so the axes are not comparable.
+          </>
+        }
+      >
+        <Plot
+          src={`${ASSET_DIR}/hero-trajectories.png`}
+          alt="Stage-3 trajectories of 200 images in PCA, coloured by depth, for the weight-tied and the original ConvNeXt-T, with their speed over depth"
+          width={2223}
+          height={1143}
+        />
+      </Figure>
+      <P>
+        A warning that applies to every picture on this page: one channel of ConvNeXt holds 98 to 99% of the
+        energy of the state, and left in, it makes every trajectory look like a straight line. I leave it out of the
+        measurements, not out of the network; section 7 explains why. The rest of the page builds the argument
+        step by step. It shows that refining depth works and how far, why the weights inside a block must stay
+        constant, that one shared block is enough for a whole stage, and then what the trajectories look like at
+        high resolution.
+      </P>
 
       <section className="mt-10 rounded-xl border border-neutral-200 bg-neutral-50/80 p-5 dark:border-neutral-800 dark:bg-neutral-900/50">
         <h2 className="text-sm font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
@@ -147,12 +239,23 @@ export default function DeltaNeuralOdePage() {
             the integration time, not on the number of steps.
           </li>
           <li>
-            Adding a zero-initialised delta per block on top of the shared block, and fine-tuning, gives{' '}
-            {pct(FINAL.deltaBest)}%: above both the shared and the original network.
+            Expanding the skip connections is a microscope. The refined network keeps the original function, but
+            samples its trajectory 100 times more densely, which is what velocities, accelerations and curvatures
+            need. At that resolution the shared network is a smooth flow that accelerates and brakes, and the
+            original network is a sequence of nearly orthogonal pushes.
+          </li>
+          <li>
+            Over 500 images, consecutive blocks of the original ConvNeXt-T move the state in almost unrelated
+            directions (cosine 0.17), and 45% of the coordinates reverse direction from one block to the next. Half
+            of all the motion in stage 3 cancels out. The shared block wastes 19%.
           </li>
           <li>
             The straight, almost one-dimensional trajectories of ConvNeXt are an artefact of one massive channel that
             holds 98 to 99% of the state&apos;s energy. Without it the dynamics are rotational and multi-dimensional.
+          </li>
+          <li>
+            Adding a zero-initialised delta per block on top of the shared block, and fine-tuning, gives{' '}
+            {pct(FINAL.deltaBest)}%: above both the shared and the original network.
           </li>
         </ul>
       </section>
@@ -174,8 +277,8 @@ export default function DeltaNeuralOdePage() {
 
       <H2 id="idea">1. The idea</H2>
       <P>
-        A residual block computes <InlineMath tex="x + f(x)" /> <Cite ids={['he2016']} />. Read with a step size of
-        one, that is exactly one step of the explicit Euler method for the ODE{' '}
+        Now more carefully. A residual block computes <InlineMath tex="x + f(x)" /> <Cite ids={['he2016']} />. Read
+        with a step size of one, that is exactly one step of the explicit Euler method for the ODE{' '}
         <InlineMath tex="\dot x = f(x,t)" /> <Cite ids={['e2017', 'haber2017', 'lu2018']} />. Neural ODEs took the
         idea to its conclusion and replaced the stack of blocks with a solver <Cite ids={['chen2018']} />. Whether
         ordinary, discretely trained networks really behave like that discretisation is a separate question, and the
@@ -230,6 +333,37 @@ export default function DeltaNeuralOdePage() {
         numbered="5"
         tex="\theta(t) \;=\; (1-\alpha)\,\theta_i + \alpha\,\theta_{i+1},\qquad \alpha = t-i."
       />
+      <H3>What I propose</H3>
+      <P>
+        The title is the claim: <strong>every skip connection can be expanded indefinitely</strong>. Take any
+        block <InlineMath tex="x \mapsto x + f_i(x)" /> of a trained network and replace it by{' '}
+        <InlineMath tex="R" /> applications of <InlineMath tex="x \mapsto x + \tfrac{1}{R} f_i(x)" />. Nothing is
+        retrained, no weight is changed, and the result is still a working classifier for any{' '}
+        <InlineMath tex="R" />, all the way to the continuous limit. That one operation supports four things:
+      </P>
+      <ol className="mt-4 list-decimal space-y-3 pl-5 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+        <li>
+          <strong>Evidence that residual blocks are one-step ODE solvers.</strong> If they were arbitrary maps that
+          only work with their exact input, splitting them would break the network. It does not, in ConvNeXt, Swin or
+          ResNet (section 2), but only if the weights inside each block are kept constant (section 3).
+        </li>
+        <li>
+          <strong>A smaller network with the same dynamics.</strong> If the stage integrates a flow, one block
+          should be enough to define it. A ConvNeXt-T with a single shared stage-3 block, trained from scratch, is
+          within 0.6 points of the original (section 4).
+        </li>
+        <li>
+          <strong>A microscope for representation dynamics.</strong> The expanded network samples the path of the
+          representation 100 times more densely, so velocity, acceleration, curvature and the timing of every
+          coordinate become measurable (sections 5 and 6). This is the part I find most useful, and the reason the
+          paper analyses trajectories with differential geometry.
+        </li>
+        <li>
+          <strong>A better way to build the discrete network.</strong> What the microscope shows, that independent
+          blocks spend half their motion undoing each other, motivates a shared field plus small per-block
+          corrections (section 8).
+        </li>
+      </ol>
       <P>
         All accuracies are top-1 on the 50,000 ImageNet-1k validation images <Cite ids={['deng2009']} />. ConvNeXt-T
         (with and without drop path) is my own run, trained from scratch for 300 epochs with timm augmentation{' '}
@@ -244,7 +378,7 @@ export default function DeltaNeuralOdePage() {
         network.
       </P>
       <Figure
-        number={1}
+        number={2}
         caption={
           <>
             Top-1 accuracy when every stage-3 block is applied <em>R</em> times with step 1/<em>R</em> (Euler, plain
@@ -291,8 +425,8 @@ export default function DeltaNeuralOdePage() {
         it gets.
       </P>
       <Figure
-        number={2}
-        caption="Same experiment as Figure 1, with the weights inside each block blended linearly between block k and k + 1."
+        number={3}
+        caption="Same experiment as Figure 2, with the weights inside each block blended linearly between block k and k + 1."
       >
         <LineChart
           ariaLabel="Accuracy versus sub-steps with bilinear weight interpolation"
@@ -320,7 +454,7 @@ export default function DeltaNeuralOdePage() {
         validation image (a snow leopard).
       </P>
       <Figure
-        number={3}
+        number={4}
         caption={
           <>
             Residual field per channel across stage 3 of ConvNeXt-T, <em>R</em> = 100. Top: plain weights. The field
@@ -350,7 +484,7 @@ export default function DeltaNeuralOdePage() {
         doubles the distance to the native trajectory.
       </P>
       <Figure
-        number={4}
+        number={5}
         caption={
           <>
             Mean of <em>h</em> per channel as the state moves through stage 3. Left: plain. Right: bilinear. In both,
@@ -380,7 +514,7 @@ export default function DeltaNeuralOdePage() {
         <Cite ids={['dehghani2019', 'lan2020']} />, but here it is a direct test of the ODE reading.
       </P>
       <Figure
-        number={5}
+        number={6}
         caption="ImageNet validation accuracy over 300 epochs of training from scratch, same recipe for all three."
       >
         <LineChart
@@ -407,7 +541,7 @@ export default function DeltaNeuralOdePage() {
         <em>t</em> = 1, so <em>T</em> = 9. Keeping <em>T</em> = 9 and changing <em>D</em>:
       </P>
       <Figure
-        number={6}
+        number={7}
         caption={
           <>
             Shared network, integration time fixed at <em>T</em> = 9, step 9/<em>D</em>. Any <em>D</em> ≥ 7 gives
@@ -437,7 +571,7 @@ export default function DeltaNeuralOdePage() {
         reaches the limit from <em>D</em> ≈ 5, RK2 from about 18 and Euler only from about 256.
       </P>
       <Figure
-        number={7}
+        number={8}
         caption={
           <>
             The horizon behaves like a learned integration time. Red: step fixed at 1, more steps, so <em>T</em> grows
@@ -464,71 +598,109 @@ export default function DeltaNeuralOdePage() {
         reached after exactly that much time.
       </P>
 
-      <H2 id="deltas">5. Shared block plus per-block deltas</H2>
+      <H2 id="microscope">5. Why expand: depth at higher resolution</H2>
       <P>
-        Sharing costs 0.6 points. The question that gives the project its name is whether that gap can be closed
-        without giving up the shared structure. Each block <em>k</em> gets its own offset on top of the shared
-        weights:
+        The original ConvNeXt-T shows you stage 3 in ten frames: the input <InlineMath tex="x_0" /> and the output
+        of each of the nine blocks. Everything that happens inside a block is invisible. That is a problem, because
+        the questions worth asking about dynamics are questions about derivatives. How fast does the representation
+        move? Does it accelerate or brake? Does it go straight or turn? When is each feature decided? With ten
+        samples of a path in 75,264 dimensions (384 channels × 14 × 14), a finite difference across a block mixes
+        two different things: the motion inside the block, and the change of vector field when the next block takes
+        over. A second difference, which is what acceleration and curvature need, is hopeless.
       </P>
-      <DisplayMath numbered="6" tex="\theta_i \;=\; \theta_{\mathrm{shared}} + \delta_i,\qquad \delta_i = 0 \text{ at initialisation.}" />
       <P>
-        The deltas cover every parameter of the block: depthwise convolution, LayerNorm, both pointwise layers and
-        the layer scale. They start at zero from the shared checkpoint, so epoch 0 is exactly the shared network, and
-        they have their own weight decay pulling them back towards it. Then the whole model is fine-tuned.
+        Expanding the skip connections is the equivalent of switching to a high-speed camera. With{' '}
+        <InlineMath tex="R=100" />, the same stage is sampled at 901 states, every{' '}
+        <InlineMath tex="\Delta t = 0.01" />. Two things make those extra frames trustworthy rather than made up.
+        The function is preserved: accuracy stays within 0.6 to 0.9 points of the original (section 2). And the
+        refined path stays close to the original states, measured on 500 images:
       </P>
       <Figure
-        number={8}
+        number={9}
         caption={
           <>
-            Fine-tuning the shared network with per-block deltas. Dashed lines: the shared network the runs start
-            from, and the original unshared ConvNeXt-T. The 27-step run unrolls the shared block to 27 steps of 1/3
-            (same <em>T</em> = 9) and is still training ({FINAL.delta27Epochs} of 100 epochs).
+            How far the refined trajectory <InlineMath tex="x^{(R)}(t)" />, <InlineMath tex="R=100" />, drifts from
+            the states of the network run with one step per block, <InlineMath tex="x_{R=1}" />. 500 images; band:
+            5th to 95th percentile; massive channel removed. Top: norm of the state and distance between the two.
+            Bottom: cosine between them. Left: original ConvNeXt-T. The error grows inside each block and is partly
+            corrected at its end; at the exit of stage 3 the cosine is still 0.93. Right: shared network. The error
+            stays bounded at a cosine of about 0.98 for the whole stage.
           </>
         }
       >
-        <LineChart
-          ariaLabel="Validation accuracy while fine-tuning shared plus delta models"
-          series={DELTA_CURVES}
-          xDomain={[0, 100]}
-          yDomain={[72, 82]}
-          xTicks={[0, 20, 40, 60, 80, 100]}
-          yTicks={[72, 74, 76, 78, 80, 82]}
-          xLabel="Fine-tuning epoch"
-          yLabel="Top-1 (%)"
-          showPoints={false}
-          refLabelSide="left"
-          refLines={[
-            { y: FINAL.convnext, label: `ConvNeXt-T ${pct(FINAL.convnext)}%` },
-            { y: FINAL.shared, label: `shared ${pct(FINAL.shared)}%` },
-          ]}
+        <Plot
+          src={`${ASSET_DIR}/refinement-fidelity.png`}
+          alt="Distance and cosine between refined and native stage-3 trajectories for ConvNeXt-T and the shared network"
+          width={2001}
+          height={1126}
         />
       </Figure>
       <P>
-        With a peak learning rate of 10⁻³ for 50 epochs, the delta model reaches{' '}
-        <strong>{pct(FINAL.deltaBest)}%</strong>, {signed(FINAL.deltaBest - FINAL.shared)} over the shared network and{' '}
-        {signed(FINAL.deltaBest - FINAL.convnext)} over the original. A gentler schedule (10⁻⁴, 100 epochs) stays at {pct(FINAL.deltaLowLr)}%. The deltas do
-        not stay small. By the end of the best run they average {(FINAL.deltaRatioEnd * 100).toFixed(0)}% of the norm
-        of the shared weights.
+        The extra resolution is not a cosmetic upgrade. It decides what you conclude. The figure below follows
+        individual coordinates of the stage-3 state, pooled over the same 500 images. For each image I keep the
+        coordinates whose total change <InlineMath tex="\Delta_i = x_i(T)-x_i(0)" /> is above that image&apos;s
+        median, and normalise each one to its own journey:
       </P>
-      <Figure number={9} caption="Relative size of the deltas during the best run, averaged over blocks and layers.">
-        <LineChart
-          ariaLabel="Delta-to-shared weight norm ratio during fine-tuning"
-          series={DELTA_RATIO}
-          xDomain={[0, 50]}
-          yDomain={[0, 0.3]}
-          xTicks={[0, 10, 20, 30, 40, 50]}
-          yTicks={[0, 0.1, 0.2, 0.3]}
-          xLabel="Fine-tuning epoch"
-          yLabel="‖δ‖ / ‖θ_shared‖"
-          showPoints={false}
-        />
+      <DisplayMath
+        numbered="6"
+        tex="p_i(t) = \frac{x_i(t) - x_i(0)}{\Delta_i},\qquad \hat h_i(t) = \frac{h_i(t)}{\Delta_i}."
+      />
+      <P>
+        <InlineMath tex="p_i" /> is the progress of coordinate <InlineMath tex="i" />: 0 where it starts, 1 at its
+        final value. <InlineMath tex="\hat h_i" /> is its velocity in the same units, positive when it moves towards
+        its final value. <InlineMath tex="t_{50}" /> is the first time a coordinate is half-way there.
+      </P>
+      <Figure
+        number={10}
+        caption={
+          <>
+            Per-coordinate dynamics of stage 3, 500 images. In each block of panels, top row: shared network; bottom
+            row: original ConvNeXt-T. Left: progress <InlineMath tex="p_i(t)" />; grey bands are the 25–75 and 5–95
+            percentiles, the black line is the median, coloured lines are single coordinates coloured by their{' '}
+            <InlineMath tex="t_{50}" />. Middle: recruitment raster, 3,000 coordinates (6 per image) sorted by
+            the time of their peak velocity; red means moving towards the final value, blue moving away. Right:
+            density of all coordinates and all times in the phase plane <InlineMath tex="(p_i, \hat h_i)" />, with
+            the median velocity at each progress level. First block of panels: one step per block (
+            <InlineMath tex="R=1" />). Second: <InlineMath tex="R=100" />.
+          </>
+        }
+      >
+        <div className="space-y-4">
+          <Plot
+            src={`${ASSET_DIR}/pooled-dynamics-r1.png`}
+            alt="Per-coordinate progress, recruitment raster and phase density at one step per block"
+            width={2423}
+            height={1223}
+          />
+          <Plot
+            src={`${ASSET_DIR}/pooled-dynamics-r100.png`}
+            alt="Per-coordinate progress, recruitment raster and phase density at 100 steps per block"
+            width={2423}
+            height={1223}
+          />
+        </div>
       </Figure>
       <P>
-        Two caveats, to be fair to the baseline. The delta model has as many stage-3 parameters as the original plus
-        one block, so it is a reparametrisation, not a compression. And it has seen 50 more epochs than the original.
-        What it shows is that a shared field plus per-block corrections is a better starting point than nine
-        independent blocks. Whether the deltas can be made sparse or low-rank, recovering the parameter savings, is
-        the next step.
+        At one step per block, both networks look like staircases. In the raster, every coordinate seems to be
+        switched on by one particular block, and the phase plane is nine scattered dots. From those pictures alone
+        you could not tell a smooth flow sampled coarsely from a sequence of unrelated maps.
+      </P>
+      <P>
+        At <InlineMath tex="R=100" /> the two networks separate. The shared network becomes a single continuous
+        wave: coordinates are recruited at staggered times (median <InlineMath tex="t_{50}" /> = 4.1), each one
+        launches, peaks and brakes as it approaches its final value, and the whole population traces one arch in
+        the phase plane. The stage is a flow with a beginning, a middle and an end, and the staircase was an
+        artefact of sampling it every unit of time. The original ConvNeXt-T keeps its steps, now resolved: inside a
+        block the velocity of each coordinate barely changes direction, and every discontinuity sits exactly at a
+        block boundary. In the phase plane each block draws its own short arc, starting where the previous one
+        stopped but at a different velocity. Across a boundary, 44.6% of the coordinates flip the sign of their
+        velocity. Inside a block, from one step of 0.01 to the next, it is about 0.2%. In the shared network the
+        flip rate at integer times is 0.1%, because nothing special happens there.
+      </P>
+      <P>
+        That is the use of interpolating depth: it separates what the network does from how coarsely we were
+        looking at it. The jumps of the original network are real, the steps of the shared network are not, and
+        only the refined trajectories can tell them apart.
       </P>
 
       <H2 id="dynamics">6. What the trajectories look like</H2>
@@ -548,8 +720,119 @@ export default function DeltaNeuralOdePage() {
         <InlineMath tex="\sigma(R) \le 0.025" />). The geometry belongs to the network, not to the input. The
         numbers in the tables below are that N=500 mean.
       </P>
+      <H3>Two ways of moving through a stage</H3>
+      <P>
+        Figure 1 coloured the trajectories by time. Coloured by class, they show where each image is going. In
+        the shared network every class leaves a common origin and fans out along its own smooth curve, and the
+        final states alone already separate the classes. In the original network the classes separate too, but
+        the paths bend at every block boundary.
+      </P>
       <Figure
-        number={10}
+        number={11}
+        caption={
+          <>
+            Same 200 images and projection as Figure 1, coloured by class. Top: weight-tied network. Bottom:
+            original ConvNeXt-T at <InlineMath tex="R=100" />. Left: PCA of every state along the path. Middle: PCA
+            fitted on the final states only. Right: speed per class (black: all images). The shared speed rises,
+            peaks at <InlineMath tex="t\approx 4" /> and brakes for every class; the original one is a crescendo
+            of plateaus, from about 17 in the first block to more than 100 in the last. The first two components
+            explain 14% of the variance in the shared network and 9% in the original.
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <Plot
+            src={`${ASSET_DIR}/pca-shared.png`}
+            alt="PCA of stage-3 trajectories of the shared ConvNeXt for ten classes, and their speed over depth"
+            width={2423}
+            height={801}
+          />
+          <Plot
+            src={`${ASSET_DIR}/pca-convnext-r100.png`}
+            alt="PCA of stage-3 trajectories of the original ConvNeXt-T for ten classes, and their speed over depth"
+            width={2423}
+            height={801}
+          />
+        </div>
+      </Figure>
+      <P>
+        The videos make the contrast concrete. On the left of each, the shared network; on the right, the original
+        one, integrated over the same nine units of depth and played in sync.
+      </P>
+      <Figure
+        number={12}
+        caption={
+          <>
+            Snow-leopard image, <InlineMath tex="\Delta t = 0.01" />, massive channel removed; the left and right
+            panels have different axis ranges. Top: phase portrait of the residual field, each point one of 8,000
+            coordinates plotted as <InlineMath tex="(x_i, h_i)" />. The shared cloud deforms continuously and
+            flattens towards <InlineMath tex="h=0" /> as the flow brakes; the original cloud is reshuffled at every
+            block boundary. Bottom: spatial mean of each of the 384 channels of <InlineMath tex="x" />.
+          </>
+        }
+      >
+        <div className="space-y-3">
+          <Video
+            src={`${ASSET_DIR}/phase-portrait-shared-vs-convnext.mp4`}
+            poster={`${ASSET_DIR}/phase-portrait-shared-vs-convnext.jpg`}
+            label="Animated phase portrait x versus h, shared network on the left and ConvNeXt-T on the right"
+          />
+          <Video
+            src={`${ASSET_DIR}/channel-means-shared-vs-convnext.mp4`}
+            poster={`${ASSET_DIR}/channel-means-shared-vs-convnext.jpg`}
+            label="Animated per-channel mean of the state, shared network on the left and ConvNeXt-T on the right"
+          />
+        </div>
+      </Figure>
+      <H3>Independent blocks undo each other</H3>
+      <P>
+        Look again at the ConvNeXt-T rows of Figure 10. The median coordinate of the original network does not progress
+        smoothly: many coordinates overshoot, come back, and go out again, and most of them only commit to their final
+        value in the last two blocks (median <InlineMath tex="t_{50}" /> = 7.2). To quantify it, take the
+        displacement of each block, <InlineMath tex="\Delta x_k = x(k+1) - x(k)" />, coordinate by coordinate:
+      </P>
+      <Table
+        head={['Model', 'R', 'Straightness', 'Wasted motion', 'Monotone share', 'cos(Δxₖ, Δxₖ₊₁)', 'Reversal rate', 'Undo fraction', 'Zig-zag share', 'Median t₅₀', 'Top-1 (500 img.)']}
+        rows={POOLED_N500.map((r) => [
+          r.model,
+          r.R,
+          r.straightness.toFixed(2),
+          `${(r.wasted * 100).toFixed(0)}%`,
+          `${(r.monotone * 100).toFixed(0)}%`,
+          r.cosBlocks.toFixed(2),
+          `${(r.reversal * 100).toFixed(0)}%`,
+          `${(r.undo * 100).toFixed(0)}%`,
+          `${(r.zigzag * 100).toFixed(0)}%`,
+          r.t50.toFixed(1),
+          `${r.top1.toFixed(1)}%`,
+        ])}
+        note="N=500, massive channel removed. Wasted motion: 1 − |net displacement| / Σ|block displacements|, summed over coordinates. Monotone share: fraction of the total change carried by coordinates that move backwards less than 5% of their path. Reversal rate: fraction of coordinates whose displacement changes sign from one block to the next (50% would be a coin flip). Undo fraction: share of a block's displacement cancelled by the next block. Zig-zag share: fraction of block displacement in coordinates that reverse at least twice."
+      />
+      <P>
+        Consecutive blocks of the original ConvNeXt-T push the state in nearly orthogonal directions (cosine 0.17;
+        two random directions in this space would give about 0.004, so they are related, but barely). From one
+        block to the next, 45% of the coordinates reverse, close to the 50% of a coin flip, and a quarter of what
+        each block moves is cancelled by the following one. 90% of the block-level motion is in coordinates that
+        zig-zag at least twice, and in total half of the distance travelled coordinate by coordinate cancels out.
+        The shared network, at the same accuracy, wastes 19%, and 73% of its change is carried by coordinates that
+        move monotonically to their final value.
+      </P>
+      <P>
+        These numbers are the same at <InlineMath tex="R=1" /> and <InlineMath tex="R=100" /> for the original
+        network, so the zig-zag is a property of the trained blocks, not of the refinement. The shared network at{' '}
+        <InlineMath tex="R=1" /> looks somewhat worse than at <InlineMath tex="R=100" />, which is the coarse Euler
+        step overshooting a flow that is really smooth.
+      </P>
+      <P>
+        On average, all blocks do push towards the final representation; the median curve rises. Coordinate by
+        coordinate, they do not. Nine independent blocks reach the same accuracy as one shared field by building
+        and destroying a large part of what the previous block wrote. Why they do this is open. They may use
+        some coordinates as temporary workspace, or overparametrisation may simply let each block correct its
+        predecessor. What the shared network shows is that the zig-zag is not needed to classify well.
+      </P>
+      <H3>One image, all channels</H3>
+      <Figure
+        number={13}
         caption={
           <>
             Shared network, 100 Euler steps over <em>T</em> = 9, for the validation image on the left. Per-channel residual
@@ -601,7 +884,7 @@ export default function DeltaNeuralOdePage() {
         as such.
       </P>
       <Figure
-        number={11}
+        number={14}
         caption={
           <>
             Shared network, all channels, one image. Left to right, top to bottom: acceleration decomposition
@@ -619,7 +902,7 @@ export default function DeltaNeuralOdePage() {
         </div>
       </Figure>
       <Figure
-        number={12}
+        number={15}
         caption={
           <>
             ConvNeXt-T, <InlineMath tex="R=100" />, all channels. Left: fraction of acceleration that is tangential
@@ -648,7 +931,7 @@ export default function DeltaNeuralOdePage() {
         median 98% of the energy of the state.
       </P>
       <Figure
-        number={13}
+        number={16}
         caption="Norm of each of the 384 channels at the exit of stage 3, shared network, one image."
       >
         <Plot
@@ -667,7 +950,7 @@ export default function DeltaNeuralOdePage() {
         <InlineMath tex="h" /> at the start to 96% at the end.
       </P>
       <Figure
-        number={14}
+        number={17}
         caption="Top-1 channel by norm of h, per image, over 200 validation images. ConvNeXt variants and Swin always pick the same channel; ResNets do not."
       >
         <Plot
@@ -726,7 +1009,7 @@ export default function DeltaNeuralOdePage() {
         ), while <InlineMath tex="\|h\|/\|x\|" /> fades from 0.42 to 0.09. A drift that turns and dies out.
       </P>
       <Figure
-        number={15}
+        number={18}
         caption={
           <>
             Shared network after the ignore path (channel 236 removed from the metric). Top: <InlineMath tex="a_n" />{' '}
@@ -745,7 +1028,7 @@ export default function DeltaNeuralOdePage() {
         </div>
       </Figure>
       <Figure
-        number={16}
+        number={19}
         caption={
           <>
             ConvNeXt-T, <InlineMath tex="R=100" />, ignore path (channel 195 removed). Left: inside each block{' '}
@@ -761,8 +1044,8 @@ export default function DeltaNeuralOdePage() {
         </div>
       </Figure>
       <Figure
-        number={17}
-        caption="Shared network, same image and integration as Figure 10, with channel 236 removed. What was hidden underneath is a family of smooth, curved trajectories."
+        number={20}
+        caption="Shared network, same image and integration as Figure 13, with channel 236 removed. What was hidden underneath is a family of smooth, curved trajectories."
       >
         <Plot
           src={`${ASSET_DIR}/spaghetti-shared-no-ch236.png`}
@@ -772,7 +1055,7 @@ export default function DeltaNeuralOdePage() {
         />
       </Figure>
       <Figure
-        number={18}
+        number={21}
         caption={
           <>
             Per-channel mean of <em>h</em> while integrating the shared network. Left: all channels, where channel
@@ -794,7 +1077,7 @@ export default function DeltaNeuralOdePage() {
         </div>
       </Figure>
       <Figure
-        number={19}
+        number={22}
         caption={
           <>
             Spatial map of ‖<em>h</em>‖ over the 14 × 14 feature grid during integration. Left: shared network, one
@@ -832,7 +1115,74 @@ export default function DeltaNeuralOdePage() {
         Whether it carries information about the image, or acts as a near-constant bias and scale, is still open.
       </P>
 
-      <H2 id="droppath">8. Is drop path the reason?</H2>
+      <H2 id="deltas">8. Shared block plus per-block deltas</H2>
+      <P>
+        Section 6 suggests that nine independent blocks are a wasteful way to integrate a stage: they carry a common
+        flow plus large, mutually cancelling corrections. Sharing removes the waste but costs 0.6 points. The
+        natural question is whether a shared flow with small per-block corrections can close that gap. Each block <em>k</em> gets its own offset on top of the shared weights:
+      </P>
+      <DisplayMath numbered="8" tex="\theta_i \;=\; \theta_{\mathrm{shared}} + \delta_i,\qquad \delta_i = 0 \text{ at initialisation.}" />
+      <P>
+        The deltas cover every parameter of the block: depthwise convolution, LayerNorm, both pointwise layers and
+        the layer scale. They start at zero from the shared checkpoint, so epoch 0 is exactly the shared network, and
+        they have their own weight decay pulling them back towards it. Then the whole model is fine-tuned.
+      </P>
+      <Figure
+        number={23}
+        caption={
+          <>
+            Fine-tuning the shared network with per-block deltas. Dashed lines: the shared network the runs start
+            from, and the original unshared ConvNeXt-T. The 27-step run unrolls the shared block to 27 steps of 1/3
+            (same <em>T</em> = 9) and is still training ({FINAL.delta27Epochs} of 100 epochs).
+          </>
+        }
+      >
+        <LineChart
+          ariaLabel="Validation accuracy while fine-tuning shared plus delta models"
+          series={DELTA_CURVES}
+          xDomain={[0, 100]}
+          yDomain={[72, 82]}
+          xTicks={[0, 20, 40, 60, 80, 100]}
+          yTicks={[72, 74, 76, 78, 80, 82]}
+          xLabel="Fine-tuning epoch"
+          yLabel="Top-1 (%)"
+          showPoints={false}
+          refLabelSide="left"
+          refLines={[
+            { y: FINAL.convnext, label: `ConvNeXt-T ${pct(FINAL.convnext)}%` },
+            { y: FINAL.shared, label: `shared ${pct(FINAL.shared)}%` },
+          ]}
+        />
+      </Figure>
+      <P>
+        With a peak learning rate of 10⁻³ for 50 epochs, the delta model reaches{' '}
+        <strong>{pct(FINAL.deltaBest)}%</strong>, {signed(FINAL.deltaBest - FINAL.shared)} over the shared network and{' '}
+        {signed(FINAL.deltaBest - FINAL.convnext)} over the original. A gentler schedule (10⁻⁴, 100 epochs) stays at {pct(FINAL.deltaLowLr)}%. The deltas do
+        not stay small. By the end of the best run they average {(FINAL.deltaRatioEnd * 100).toFixed(0)}% of the norm
+        of the shared weights.
+      </P>
+      <Figure number={24} caption="Relative size of the deltas during the best run, averaged over blocks and layers.">
+        <LineChart
+          ariaLabel="Delta-to-shared weight norm ratio during fine-tuning"
+          series={DELTA_RATIO}
+          xDomain={[0, 50]}
+          yDomain={[0, 0.3]}
+          xTicks={[0, 10, 20, 30, 40, 50]}
+          yTicks={[0, 0.1, 0.2, 0.3]}
+          xLabel="Fine-tuning epoch"
+          yLabel="‖δ‖ / ‖θ_shared‖"
+          showPoints={false}
+        />
+      </Figure>
+      <P>
+        Two caveats, to be fair to the baseline. The delta model has as many stage-3 parameters as the original plus
+        one block, so it is a reparametrisation, not a compression. And it has seen 50 more epochs than the original.
+        What it shows is that a shared field plus per-block corrections is a better starting point than nine
+        independent blocks. Whether the deltas can be made sparse or low-rank, recovering the parameter savings, is
+        the next step.
+      </P>
+
+      <H2 id="droppath">9. Is drop path the reason?</H2>
       <P>
         Stochastic depth <Cite ids={['huang2016']} /> randomly skips blocks during training, so every block has to be
         optional. That should push towards small updates that agree with their neighbours, which is what an ODE needs.
@@ -857,7 +1207,7 @@ export default function DeltaNeuralOdePage() {
         residual networks, and drop path strengthens it.
       </P>
 
-      <H2 id="next">9. Open questions</H2>
+      <H2 id="next">10. Open questions</H2>
       <ul className="mt-4 list-disc space-y-2 pl-5 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
         <li>
           Finish the 27-step delta run, and the shared networks with 27 steps and with every stage shared, and run the
@@ -865,6 +1215,11 @@ export default function DeltaNeuralOdePage() {
         </li>
         <li>
           Make the deltas sparse or low-rank, so the delta model recovers the parameter savings of sharing.
+        </li>
+        <li>
+          Explain the zig-zag of independent blocks: which coordinates are built and destroyed, whether they carry
+          information that a later block reads, and whether the delta model inherits it or stays close to the
+          shared flow.
         </li>
         <li>
           Pin down the massive channel. Replace it by its dataset mean instead of zero, which separates bias from

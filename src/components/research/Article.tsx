@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import type { ReactNode } from 'react';
-import { REFERENCES } from '@/content/research/delta-neural-ode';
+import { REFERENCES } from '@/content/research/representation-dynamics';
 
 export function Figure({
   id,

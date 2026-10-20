@@ -1,4 +1,4 @@
-import type { ChartSeries } from '@/content/research/delta-neural-ode';
+import type { ChartSeries } from '@/content/research/representation-dynamics';
 
 interface RefLine {
   y: number;

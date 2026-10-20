@@ -28,10 +28,10 @@ export const HOME = {
     'Mostly computer vision, with a habit of going back to first principles: train it from scratch, find out what breaks, reformulate the problem when the standard one stops making sense.',
   research: [
     {
-      title: 'Residual networks as ODEs',
+      title: 'All skip-connections can be expanded indefinitely',
       period: '2026 – now',
-      body: 'Reading ConvNeXt, Swin and ResNet as Euler steps of a differential equation. Pretrained networks can be integrated with 128× more steps without fine-tuning, one shared block can replace a whole stage, and the straight trajectories turn out to be a single massive channel.',
-      link: { href: '/research/delta-neural-ode', label: 'Read the write-up' },
+      body: 'Every skip connection is one Euler step, so it can be split into as many smaller steps as you like without fine-tuning. That turns nine snapshots of a network into a continuous trajectory, which I use to study representation dynamics with differential geometry: one shared block flows smoothly through stage 3, while independent blocks zig-zag and undo each other.',
+      link: { href: '/research/representation-dynamics', label: 'Read the write-up' },
     },
     {
       title: 'Counting what cannot be separated',

@@ -25,6 +25,8 @@ const nextConfig: NextConfig = {
       { source: '/blog/es', destination: '/blog', statusCode: 301 },
       { source: '/blog/en/:slug', destination: '/blog/:slug', statusCode: 301 },
       { source: '/blog/es/:slug', destination: '/blog', statusCode: 301 },
+      { source: '/research/delta-neural-ode', destination: '/research/representation-dynamics', statusCode: 301 },
+      { source: '/research/delta-neural-ode/:path*', destination: '/research/representation-dynamics/:path*', statusCode: 301 },
     ]
   },
 }

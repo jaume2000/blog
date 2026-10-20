@@ -1,4 +1,4 @@
-import data from './delta-neural-ode-data.json'
+import data from './representation-dynamics-data.json'
 
 export type Point = readonly [number, number]
 
@@ -9,7 +9,7 @@ export interface ChartSeries {
   dashed?: boolean
 }
 
-export const ASSET_DIR = '/research/delta-neural-ode'
+export const ASSET_DIR = '/research/representation-dynamics'
 
 const COLORS = {
   convnext: '#2563eb',
@@ -152,6 +152,17 @@ export const DYNAMICS_N500 = [
   { model: 'Swin-T', ignore: true, R: 0.812, Rsd: 0.016, prDepth: 1.17, prSpatial: 7.31, kappa: 0.0044, omega: 0.51, an: 0.89, at: -0.39, cosX: 0.08, cosH: 0.03, channel: 322, share: '17%' },
   { model: 'ResNet-50', ignore: false, R: 0.396, Rsd: 0.012, prDepth: 4.94, prSpatial: 5.84, kappa: 0.0024, omega: 0.63, an: 0.9, at: -0.41, cosX: 0.6, cosH: -0.08, channel: null, share: '<1%' },
   { model: 'ResNet-101', ignore: false, R: 0.169, Rsd: 0.005, prDepth: 19.66, prSpatial: 12.1, kappa: 0.0022, omega: 0.54, an: 0.93, at: -0.31, cosX: 0.48, cosH: -0.04, channel: null, share: '<1%' },
+] as const
+
+/**
+ * Per-coordinate dynamics pooled over the same 500 images, massive channel removed.
+ * Block-level quantities use the displacement over each unit interval [k, k+1].
+ */
+export const POOLED_N500 = [
+  { model: 'Shared stage 3', R: 100, straightness: 0.779, wasted: 0.188, monotone: 0.73, cosBlocks: 0.922, reversal: 0.114, undo: 0.018, zigzag: 0.137, flipSwitch: 0.001, t50: 4.09, top1: 80.8 },
+  { model: 'Shared stage 3', R: 1, straightness: 0.718, wasted: 0.252, monotone: 0.629, cosBlocks: 0.768, reversal: 0.183, undo: 0.052, zigzag: 0.337, flipSwitch: null, t50: 5.0, top1: 81.2 },
+  { model: 'ConvNeXt-T', R: 100, straightness: 0.502, wasted: 0.477, monotone: 0.212, cosBlocks: 0.171, reversal: 0.446, undo: 0.249, zigzag: 0.902, flipSwitch: 0.446, t50: 7.21, top1: 81.2 },
+  { model: 'ConvNeXt-T', R: 1, straightness: 0.501, wasted: 0.484, monotone: 0.22, cosBlocks: 0.165, reversal: 0.447, undo: 0.248, zigzag: 0.904, flipSwitch: null, t50: 7.82, top1: 80.0 },
 ] as const
 
 export interface Reference {
