@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FileText, Github } from 'lucide-react';
 import type { ReactNode } from 'react';
 import LineChart from '@/components/research/LineChart';
 import { Bibliography, Cite, Figure, Plot, Video } from '@/components/research/Article';
@@ -24,6 +25,7 @@ import { SITE } from '@/content/site';
 import { pageMeta } from '@/lib/metadata';
 
 const TITLE = 'All skip-connections can be expanded indefinitely';
+const CODE_URL = 'https://github.com/jaume2000/dynamics_skip_nn';
 const SUBTITLE = 'An analysis of representation dynamics in vision models with differential geometry';
 const DESCRIPTION =
   'Every skip connection is one Euler step, so ConvNeXt, Swin and ResNet can be run with 100× more steps without fine-tuning. The refined networks expose the continuous trajectory of the representation: one shared block flows smoothly through the stage, independent blocks zig-zag and undo each other.';
@@ -122,6 +124,26 @@ export default function RepresentationDynamicsPage() {
       <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
         {SITE.fullName} · Mycrospace AI Research, Valencia · Trained on the Leonardo supercomputer (CINECA, EuroHPC)
       </p>
+      <div className="mt-5 flex flex-wrap items-center gap-2">
+        <a
+          href={CODE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 rounded-full border border-neutral-300 px-3 py-1 text-sm font-medium text-neutral-800 transition-colors hover:border-neutral-900 hover:bg-neutral-900 hover:text-white dark:border-neutral-700 dark:text-neutral-200 dark:hover:border-neutral-100 dark:hover:bg-neutral-100 dark:hover:text-neutral-900"
+        >
+          <Github aria-hidden className="h-4 w-4" />
+          GitHub
+        </a>
+        <span
+          aria-disabled="true"
+          title="Coming November 1st"
+          className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-full border border-dashed border-neutral-300 px-3 py-1 text-sm font-medium text-neutral-400 dark:border-neutral-700 dark:text-neutral-500"
+        >
+          <FileText aria-hidden className="h-4 w-4" />
+          arXiv
+          <span className="text-xs font-normal">· coming November 1st</span>
+        </span>
+      </div>
 
       <P>
         Take a photo of a snow leopard, push it through a ConvNeXt and stop at the entrance of its third stage. At

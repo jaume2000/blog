@@ -23,10 +23,17 @@ const nextConfig: NextConfig = {
       { source: '/lab', destination: '/learning', statusCode: 301 },
       { source: '/blog/en', destination: '/blog', statusCode: 301 },
       { source: '/blog/es', destination: '/blog', statusCode: 301 },
+      { source: '/blog/en/delta-neural-ode', destination: '/research/representation-dynamics', statusCode: 301 },
+      { source: '/blog/en/delta-neural-odes', destination: '/research/representation-dynamics', statusCode: 301 },
+      { source: '/blog/es/delta-neural-ode', destination: '/research/representation-dynamics', statusCode: 301 },
+      { source: '/blog/es/delta-neural-odes', destination: '/research/representation-dynamics', statusCode: 301 },
+      { source: '/blog/delta-neural-ode', destination: '/research/representation-dynamics', statusCode: 301 },
+      { source: '/blog/delta-neural-odes', destination: '/research/representation-dynamics', statusCode: 301 },
       { source: '/blog/en/:slug', destination: '/blog/:slug', statusCode: 301 },
       { source: '/blog/es/:slug', destination: '/blog', statusCode: 301 },
       { source: '/research/delta-neural-ode', destination: '/research/representation-dynamics', statusCode: 301 },
       { source: '/research/delta-neural-ode/:path*', destination: '/research/representation-dynamics/:path*', statusCode: 301 },
+      { source: '/research/delta-neural-odes', destination: '/research/representation-dynamics', statusCode: 301 },
     ]
   },
 }
