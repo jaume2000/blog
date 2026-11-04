@@ -8,6 +8,7 @@ export default function ServiceCard({
   service: ServicePackage;
   highlightFn: (highlights: ServiceHighlight[]) => void;
 }) {
+  
   return (
     <Link href={`/services#${service.id}`} className="group h-full">
       <article
