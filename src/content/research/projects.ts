@@ -17,7 +17,7 @@ export interface ResearchProject {
 export const RESEARCH_INTRO =
   'Mostly computer vision, with a habit of going back to first principles: train it from scratch, find out what breaks, reformulate the problem when the standard one stops making sense.'
 
-export const RESEARCH_PROJECTS = [
+export const RESEARCH_PROJECTS: readonly ResearchProject[] = [
   {
     slug: 'representation-dynamics',
     title:
@@ -75,8 +75,8 @@ export const RESEARCH_PROJECTS = [
       { href: '/work#convnext-leonardo', label: 'Read the case' },
     ],
   },
-] as const satisfies readonly ResearchProject[]
+]
 
-export const FEATURED_RESEARCH = RESEARCH_PROJECTS.filter((project) => project.featured != null).sort(
-  (a, b) => (a.featured ?? 0) - (b.featured ?? 0),
-)
+export const FEATURED_RESEARCH = RESEARCH_PROJECTS.filter(
+  (project): project is ResearchProject & { featured: number } => project.featured != null,
+).sort((a, b) => a.featured - b.featured)
