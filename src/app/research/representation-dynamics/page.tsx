@@ -24,7 +24,7 @@ import {
 import { SITE } from '@/content/site';
 import { pageMeta } from '@/lib/metadata';
 
-const TITLE = 'All skip-connections can be expanded indefinitely';
+const TITLE = 'What Extra Euler Steps Reveal About Residual Networks: Feature Dynamics in Weight-Tied and Untied Stages';
 const CODE_URL = 'https://github.com/jaume2000/dynamics_skip_nn';
 const SUBTITLE = 'An analysis of representation dynamics in vision models with differential geometry';
 const DESCRIPTION =
@@ -115,7 +115,13 @@ export default function RepresentationDynamicsPage() {
   return (
     <main id="main" className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
       <p className="text-sm font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-        Research · ongoing · October 2026
+        <Link
+          href="/research"
+          className="hover:text-neutral-800 dark:hover:text-neutral-200"
+        >
+          Research
+        </Link>
+        {' · ongoing · October 2026'}
       </p>
       <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-neutral-900 sm:text-4xl dark:text-neutral-100">
         {TITLE}

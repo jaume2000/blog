@@ -3,13 +3,6 @@ export interface HomeLink {
   label: string
 }
 
-export interface ResearchItem {
-  title: string
-  period?: string
-  body: string
-  link?: HomeLink
-}
-
 export interface Idea {
   body: string
   link?: HomeLink
@@ -24,32 +17,7 @@ export const HOME = {
   aboutLink: { href: '/about', label: 'More about me' },
 
   researchHeading: 'Research',
-  researchIntro:
-    'Mostly computer vision, with a habit of going back to first principles: train it from scratch, find out what breaks, reformulate the problem when the standard one stops making sense.',
-  research: [
-    {
-      title: 'All skip-connections can be expanded indefinitely',
-      period: '2026 – now',
-      body: 'Every skip connection is one Euler step, so it can be split into as many smaller steps as you like without fine-tuning. That turns nine snapshots of a network into a continuous trajectory, which I use to study representation dynamics with differential geometry: one shared block flows smoothly through stage 3, while independent blocks zig-zag and undo each other.',
-      link: { href: '/research/representation-dynamics', label: 'Read the write-up' },
-    },
-    {
-      title: 'Counting what cannot be separated',
-      period: '2024 – now',
-      body: 'Automatic colony counting on microbiology plates, which started as my master’s thesis and became Mycrospace. Detectors work until roughly 300 overlapping colonies, then stop separating instances at all, so for crowded plates I reformulated counting as density estimation with Bayesian priors.',
-      link: { href: '/work#mycrospace', label: 'Read the case' },
-    },
-    {
-      title: 'ConvNeXt-V1 from scratch',
-      body: 'ConvNeXt-Tiny trained from scratch on ImageNet-1k on the Leonardo supercomputer, reaching 81% top-1 with my own training framework. Ongoing on top of that baseline: locating redundant parameters, and reparametrising residual blocks read as steps of an ODE solver.',
-      link: { href: 'https://github.com/jaume2000/convnext_v1', label: 'Code on GitHub' },
-    },
-    {
-      title: 'Brain MRI segmentation',
-      period: '2025 – 2026',
-      body: 'At MIALAB (UPV): volumetric brain MRI segmentation with nnU-Net and inference-pipeline optimisation for the VolBrain platform. Scarce data, contested ground truth, and nobody accepts a number without an error bar.',
-    },
-  ] satisfies readonly ResearchItem[],
+  researchLink: { href: '/research', label: 'All research' },
 
   reflectionsHeading: 'Reflections',
   reflectionsIntro:

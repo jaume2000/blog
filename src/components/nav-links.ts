@@ -8,6 +8,7 @@ export interface NavLink {
 export function getMainNavLinks(): NavLink[] {
   return [
     { href: '/', label: 'Home' },
+    { href: '/research', label: 'Research' },
     { href: '/blog', label: 'Blog' },
     { href: '/about', label: 'About' },
     { href: '/freelance', label: 'Freelance', activeFor: ['/services', '/work'] },

@@ -10,8 +10,8 @@ import { pageMeta } from '@/lib/metadata';
 // come from src/app/layout.tsx and lib/metadata.ts, same as every other page.
 //
 // /learning is linked from here and from nowhere else. Decision: keep it out of the
-// main nav (Home, Blog, About, Freelance). It stays indexable via the sitemap and is
-// also linked from the home page.
+// main nav (Home, Research, Blog, About, Freelance). It stays indexable via the sitemap
+// and is also linked from the home page.
 export const metadata: Metadata = pageMeta({
   title: META.aboutTitle,
   description: META.aboutDescription,

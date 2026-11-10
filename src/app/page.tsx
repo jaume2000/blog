@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import BlogCard from '@/components/BlogCard';
-import { HOME, type HomeLink, type Idea, type ResearchItem } from '@/content/home';
+import { HOME, type HomeLink, type Idea } from '@/content/home';
+import { FEATURED_RESEARCH } from '@/content/research/projects';
+import ResearchList from '@/components/research/ResearchList';
 import { SITE } from '@/content/site';
 import { getPublishedPosts } from '@/lib/blog';
 import { homeMeta } from '@/lib/metadata';
@@ -31,7 +33,6 @@ function TextLink({ link }: { link: HomeLink }) {
 
 export default function Home() {
   const posts = getPublishedPosts();
-  const research: readonly ResearchItem[] = HOME.research;
   const ideas: readonly Idea[] = HOME.ideas;
 
   return (
@@ -61,30 +62,13 @@ export default function Home() {
       </section>
 
       <section className="mt-16 sm:mt-20">
-        <h2 className={headingClass}>{HOME.researchHeading}</h2>
-        <p className="mt-4 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-          {HOME.researchIntro}
-        </p>
-        <ul className="mt-6 space-y-8 border-l border-neutral-200 pl-6 dark:border-neutral-800">
-          {research.map((item) => (
-            <li key={item.title}>
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                <h3 className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
-                  {item.title}
-                </h3>
-                {item.period && (
-                  <span className="text-sm tabular-nums text-neutral-500 dark:text-neutral-400">
-                    {item.period}
-                  </span>
-                )}
-              </div>
-              <p className="mt-2 text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
-                {item.body}
-              </p>
-              {item.link && <TextLink link={item.link} />}
-            </li>
-          ))}
-        </ul>
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className={headingClass}>{HOME.researchHeading}</h2>
+          <TextLink link={HOME.researchLink} />
+        </div>
+        <div className="mt-6">
+          <ResearchList projects={FEATURED_RESEARCH} heading="h3" showStatus={false} />
+        </div>
       </section>
 
       <section className="mt-16 sm:mt-20">

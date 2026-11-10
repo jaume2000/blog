@@ -54,6 +54,9 @@ export const META = {
   workTitle: 'Work',
   workDescription:
     'Case studies: Mycrospace, a biotech AI product I built as CTO and that five laboratories run in production, and ConvNeXt-V1 trained from scratch to 81% top-1 on ImageNet-1k at EuroHPC Leonardo.',
+  researchTitle: 'Research',
+  researchDescription:
+    'Computer vision research by Jaume Ivars Grimalt: residual networks as ODE solvers, colony counting, brain MRI segmentation, and self-supervised MRI denoising.',
   aboutTitle: 'About',
   aboutDescription:
     'ML engineer and CTO of Mycrospace. I train models, deploy them, and build the product around them. Remote from Valencia.',
